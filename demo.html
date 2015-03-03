@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+<head>
+  <title>at-form-codemirror</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script src="../webcomponentsjs/webcomponents.js"></script>
+  <link rel="import" href="at-form-codemirror.html" />
+  <style>
+    body {
+      margin: 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+    }
+
+    at-form-codemirror {
+      height: 50%;
+      width: 100%;
+    }
+  </style>
+
+</head>
+<body unresolved>
+  <h2>This is demo for at-form-codemirror</h2>
+  <at-form-codemirror id="codeMirror" required="true">
+    Pera
+  </at-form-codemirror>
+
+
+  <script>
+    document.addEventListener('polymer-ready', function () {
+      var codeMirror = document.getElementById('codeMirror');
+      console.log(codeMirror);
+    });
+  </script>
+</body>
+</html>
