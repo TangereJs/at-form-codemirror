@@ -2,82 +2,18 @@
 <link rel="import" href="../polymer/polymer.html" />
 <link rel="import" href="../code-mirror/codemirror-import.html" />
 
-<script src="../code-mirror/codemirror-4.0/mode/apl/apl.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/asterisk/asterisk.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/clike/clike.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/clojure/clojure.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/cobol/cobol.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/coffeescript/coffeescript.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/commonlisp/commonlisp.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/css/css.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/d/d.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/diff/diff.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/dtd/dtd.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/ecl/ecl.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/eiffel/eiffel.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/erlang/erlang.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/fortran/fortran.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/gas/gas.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/gfm/gfm.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/gherkin/gherkin.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/go/go.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/groovy/groovy.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/haml/haml.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/haskell/haskell.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/haxe/haxe.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/htmlembedded/htmlembedded.js"></script>
+<!-- mode name: text/html or htmlmixed  -->
 <script src="../code-mirror/codemirror-4.0/mode/htmlmixed/htmlmixed.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/http/http.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/jade/jade.js"></script>
+<!-- mode name: text/css -->
+<script src="../code-mirror/codemirror-4.0/mode/css/css.js"></script>
+<!-- mode names: javascript, application/json  -->
 <script src="../code-mirror/codemirror-4.0/mode/javascript/javascript.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/jinja2/jinja2.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/julia/julia.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/livescript/livescript.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/lua/lua.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/markdown/markdown.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/mirc/mirc.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/mllike/mllike.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/nginx/nginx.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/ntriples/ntriples.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/octave/octave.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/pascal/pascal.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/pegjs/pegjs.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/perl/perl.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/php/php.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/pig/pig.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/properties/properties.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/puppet/puppet.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/python/python.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/q/q.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/r/r.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/rpm/rpm.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/rst/rst.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/ruby/ruby.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/rust/rust.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/sass/sass.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/scheme/scheme.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/shell/shell.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/sieve/sieve.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/smalltalk/smalltalk.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/smarty/smarty.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/smartymixed/smartymixed.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/solr/solr.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/sparql/sparql.js"></script>
+<!-- mode name: sql -->
 <script src="../code-mirror/codemirror-4.0/mode/sql/sql.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/stex/stex.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/tcl/tcl.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/tiddlywiki/tiddlywiki.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/tiki/tiki.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/toml/toml.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/turtle/turtle.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/vb/vb.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/vbscript/vbscript.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/velocity/velocity.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/verilog/verilog.js"></script>
+<!-- mode name: markdown -->
+<script src="../code-mirror/codemirror-4.0/mode/markdown/markdown.js"></script>
+<!-- mode name: xml -->
 <script src="../code-mirror/codemirror-4.0/mode/xml/xml.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/xquery/xquery.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/yaml/yaml.js"></script>
-<script src="../code-mirror/codemirror-4.0/mode/z80/z80.js"></script>
 
 <polymer-element name="at-form-codemirror" attributes="value mode theme tabSize lineNumbers required disabled">
   <template>
@@ -163,6 +99,8 @@
       required: false,
       isValid: true,
       label: '',
+      // available modes are
+      // htmlmixed, text/css, javascript, application/json, sql, xml
       mode: 'htmlmixed',
       theme: 'xq-light',
       tabSize: 2,
@@ -235,3 +173,80 @@
     });
   </script>
 </polymer-element>
+
+<!-- Recycle this code should any of these modes should be needed -->
+<!--<script src="../code-mirror/codemirror-4.0/mode/apl/apl.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/asterisk/asterisk.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/clike/clike.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/clojure/clojure.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/cobol/cobol.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/coffeescript/coffeescript.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/commonlisp/commonlisp.js"></script>-->
+<!--<script src="../code-mirror/codemirror-4.0/mode/d/d.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/diff/diff.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/dtd/dtd.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/ecl/ecl.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/eiffel/eiffel.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/erlang/erlang.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/fortran/fortran.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/gas/gas.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/gfm/gfm.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/gherkin/gherkin.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/go/go.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/groovy/groovy.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/haml/haml.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/haskell/haskell.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/haxe/haxe.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/htmlembedded/htmlembedded.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/http/http.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/jade/jade.js"></script>
+
+<script src="../code-mirror/codemirror-4.0/mode/jinja2/jinja2.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/julia/julia.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/livescript/livescript.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/lua/lua.js"></script>
+
+<script src="../code-mirror/codemirror-4.0/mode/mirc/mirc.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/mllike/mllike.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/nginx/nginx.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/ntriples/ntriples.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/octave/octave.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/pascal/pascal.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/pegjs/pegjs.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/perl/perl.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/php/php.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/pig/pig.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/properties/properties.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/puppet/puppet.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/python/python.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/q/q.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/r/r.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/rpm/rpm.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/rst/rst.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/ruby/ruby.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/rust/rust.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/sass/sass.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/scheme/scheme.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/shell/shell.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/sieve/sieve.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/smalltalk/smalltalk.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/smarty/smarty.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/smartymixed/smartymixed.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/solr/solr.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/sparql/sparql.js"></script>
+
+<script src="../code-mirror/codemirror-4.0/mode/stex/stex.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/tcl/tcl.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/tiddlywiki/tiddlywiki.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/tiki/tiki.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/toml/toml.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/turtle/turtle.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/vb/vb.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/vbscript/vbscript.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/velocity/velocity.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/verilog/verilog.js"></script>
+
+<script src="../code-mirror/codemirror-4.0/mode/xquery/xquery.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/yaml/yaml.js"></script>
+<script src="../code-mirror/codemirror-4.0/mode/z80/z80.js"></script>-->
+
