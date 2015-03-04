@@ -2,7 +2,7 @@
   "name": "at-form-codemirror",
   "private": true,
   "dependencies": {
-    "code-mirror": "Polymer/code-mirror#master"
+    "code-mirror": "Polymer/code-mirror#master",
     "polymer": "Polymer/polymer#master"
   }
 }
