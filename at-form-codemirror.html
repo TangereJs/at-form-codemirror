@@ -1,4 +1,3 @@
-
 <link rel="import" href="../polymer/polymer.html" />
 <link rel="import" href="../code-mirror/codemirror-import.html" />
 
@@ -15,7 +14,7 @@
 <!-- mode name: xml -->
 <script src="../code-mirror/codemirror-4.0/mode/xml/xml.js"></script>
 
-<polymer-element name="at-form-codemirror" attributes="value mode theme tabSize lineNumbers required disabled">
+<dom-module id="at-form-codemirror">
   <template>
     <link rel="stylesheet" href="../code-mirror/codemirror-4.0/lib/codemirror.css">
     <link href="../code-mirror/codemirror-4.0/theme/ambiance.css" rel="stylesheet">
@@ -42,7 +41,7 @@
         display: block;
         position: relative;
       }
-
+      
       .CodeMirror {
         position: absolute;
         top: 0;
@@ -50,28 +49,28 @@
         height: 100%;
         width: 100%;
       }
-
+      
       #codeMirrorArea {
         position: relative;
         width: 100%;
         height: 100%;
       }
-
+      
       #requiredValidationMessage {
         display: none;
       }
-
-        #requiredValidationMessage[invalid] {
-          display: block;
-          position: relative;
-        }
-
+      
+      #requiredValidationMessage[invalid] {
+        display: block;
+        position: relative;
+      }
+      
       .error {
         color: rgb(255, 0, 0);
         font-size: inherit;
         font: inherit;
       }
-
+      
       .codeMirrorLabel {
         font-size: 14px;
         font-weight: bold;
@@ -80,99 +79,159 @@
       }
     </style>
     <div id="labelArea">
-      <label class="codeMirrorLabel"> {{ label }}</label>
+      <label class="codeMirrorLabel">{{label}}</label>
     </div>
     <div id="codeMirrorArea"></div>
-    <div id="requiredValidationMessage" class="required" invalid?="{{ !isValid }}">
+    <div id="requiredValidationMessage" class="required">
       <p class="error">This field is required</p>
     </div>
   </template>
-  <script>
-    Polymer('at-form-codemirror', {
-      publish: {
-        value: {
-          value: '',
-          reflect: true
-        }
+
+</dom-module>
+
+<script>
+  Polymer({
+    is: 'at-form-codemirror',
+    properties: {
+      value: {
+        type: String,
+        value: '',
+        notify: true,
+        observer: 'valueChanged'
       },
-      disabled: false,
-      required: false,
-      isValid: true,
-      label: '',
       // available modes are
       // htmlmixed, text/css, javascript, application/json, sql, xml
-      mode: 'htmlmixed',
-      theme: 'xq-light',
-      tabSize: 2,
-      lineNumbers: true,
-      _cursor: undefined,
-      ready: function () {
-        if (!this.value) {
-          this.value = this.textContent;
-        }
-        this.mirror = CodeMirror(this.$.codeMirrorArea, {
-          value: this.value || this.textContent,
-          mode: this.mode,
-          theme: this.theme,
-          tabSize: this.tabSize,
-          lineNumbers: this.lineNumbers,
-          foldGutter: true,
-          readOnly: this.disabled,
-          gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
-        });
-        var self = this;
-        this.mirror.on('change', function (codeMirror, changeObj) {
-          self.requiredChanged();
-          self.value = codeMirror.getValue();
-        });
+      mode: {
+        type: String,
+        value: 'htmlmixed',
+        observer: 'modeChanged'
       },
-      refresh: function () {
+      theme: {
+        type: String,
+        value: 'xq-light',
+        observer: 'themeChanged'
+      },
+      tabSize: {
+        type: Number,
+        value: 2,
+        observer: 'tabSizeChanged'
+      },
+      noLineNumbers: {
+        type: Boolean,
+        value: false,
+        observer: 'lineNumbersChanged'
+      },
+      required: {
+        type: Boolean,
+        value: false,
+        observer: 'requiredChanged'
+      },
+      disabled: {
+        type: Boolean,
+        value: false,
+        observer: 'disabledChanged'
+      },
+      label: {
+        type: String,
+        value: '',
+      }
+    },
+    _cursor: undefined,
+    _isReady: false,
+    ready: function () {
+      if (!this.value) {
+        this.value = this.textContent;
+      }
+      this.mirror = CodeMirror(this.$.codeMirrorArea, {
+        value: this.value || this.textContent,
+        mode: this.mode,
+        theme: this.theme,
+        tabSize: this.tabSize,
+        lineNumbers: !this.noLineNumbers,
+        foldGutter: true,
+        readOnly: this.disabled,
+        gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
+      });
+      var self = this;
+      this.mirror.on('change', function (codeMirror, changeObj) {
+        self.requiredChanged();
+        self.value = codeMirror.getValue();
+      });
+
+      this._isReady = true;
+    },
+    refresh: function () {
+      if (this._isReady) {
         this.mirror.refresh();
-      },
-      valueChanged: function () {
+      }
+    },
+    valueChanged: function () {
+      if (this._isReady) {
         // we remember the cursor because mirror.setValue() sets the cursor to (0, 0)
         this._cursor = this.mirror.getCursor();
         this.mirror.setValue(this.value);
         this.requiredChanged();
         // we restore the previous cursor position
         this.mirror.setCursor(this._cursor);
-        this.fire('change', this.value);
-      },
-      modeChanged: function () {
-        this.mirror.setOption('mode', this.mode);
-      },
-      themeChanged: function () {
-        this.mirror.setOption('theme', this.theme);
-      },
-      tabSizeChanged: function () {
-        this.mirror.setOption('tabSize', this.tabSize);
-      },
-      lineNumbersChanged: function () {
-        this.mirror.setOption('lineNumbers', this.lineNumbers);
-      },
-      focus: function () {
-        this.mirror.focus();
-      },
-      disabledChanged: function (oldValue, newValue) {
-        this.mirror.setOption('readOnly', this.disabled);
-      },
-      requiredChanged: function (oldValue, newValue) {
-        this.isValid = !this.required || (this.required && this.mirror.getValue() !== '');
-      },
-      autoGrow: function (input) {
-        input.oninput = function () {
-          this.style.height = 'auto';
-          this.style.height = this.scrollHeight + 'px';
-          window.scrollTo(window.scrollLeft, (this.scrollTop + this.scrollHeight));
-        };
-
-        var inputEvent = document.createEvent('Event');
-        inputEvent.initEvent('input', true, true);
-        input.dispatchEvent(inputEvent);
+        this.updateInvalidAttr();
       }
-    });
-  </script>
-</polymer-element>
+    },
+    modeChanged: function () {
+      if (this._isReady) {
+        this.mirror.setOption('mode', this.mode);
+      }
+    },
+    themeChanged: function () {
+      if (this._isReady) {
+        this.mirror.setOption('theme', this.theme);
+      }
+    },
+    tabSizeChanged: function () {
+      if (this._isReady) {
+        this.mirror.setOption('tabSize', this.tabSize);
+      }
+    },
+    lineNumbersChanged: function () {
+      if (this._isReady) {
+        this.mirror.setOption('lineNumbers', this.lineNumbers);
+      }
+    },
+    focus: function () {
+      if (this._isReady) {
+        this.mirror.focus();
+      }
+    },
+    disabledChanged: function (oldValue, newValue) {
+      if (this._isReady) {
+        this.mirror.setOption('readOnly', this.disabled);
+      }
+    },
+    requiredChanged: function (oldValue, newValue) {
+      if (this._isReady) {
+
+        this.updateInvalidAttr();
+      }
+    },
+    updateInvalidAttr: function () {
+      if (this.required && (this.value === undefined || this.value == '')) {
+        this.$.requiredValidationMessage.setAttribute('invalid', true);
+      } else {
+        this.$.requiredValidationMessage.removeAttribute('invalid');
+      }
+    },
+    autoGrow: function (input) {
+      input.oninput = function () {
+        this.style.height = 'auto';
+        this.style.height = this.scrollHeight + 'px';
+        window.scrollTo(window.scrollLeft, (this.scrollTop + this.scrollHeight));
+      };
+
+      var inputEvent = document.createEvent('Event');
+      inputEvent.initEvent('input', true, true);
+      input.dispatchEvent(inputEvent);
+    }
+  });
+</script>
 
 <!-- Recycle this code should any of these modes should be needed -->
 <!--<script src="../code-mirror/codemirror-4.0/mode/apl/apl.js"></script>
@@ -249,4 +308,3 @@
 <script src="../code-mirror/codemirror-4.0/mode/xquery/xquery.js"></script>
 <script src="../code-mirror/codemirror-4.0/mode/yaml/yaml.js"></script>
 <script src="../code-mirror/codemirror-4.0/mode/z80/z80.js"></script>-->
-

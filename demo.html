@@ -1,5 +1,6 @@
 <!doctype html>
 <html>
+
 <head>
   <title>at-form-codemirror</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -14,7 +15,7 @@
       height: 100%;
       width: 100%;
     }
-
+    
     at-form-codemirror {
       height: 50%;
       width: 100%;
@@ -22,7 +23,8 @@
   </style>
 
 </head>
-<body unresolved>
+
+<body>
   <h2>This is demo for at-form-codemirror</h2>
   <at-form-codemirror id="codeMirror" required="true">
     Pera
@@ -30,10 +32,11 @@
 
 
   <script>
-    document.addEventListener('polymer-ready', function () {
+    document.addEventListener('WebComponentsReady', function () {
       var codeMirror = document.getElementById('codeMirror');
-      console.log(codeMirror);
+      //      console.log(codeMirror);
     });
   </script>
 </body>
+
 </html>
