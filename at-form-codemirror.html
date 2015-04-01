@@ -15,75 +15,78 @@
 <script src="../code-mirror/codemirror-4.0/mode/xml/xml.js"></script>
 
 <dom-module id="at-form-codemirror">
+  <link rel="stylesheet" href="../code-mirror/codemirror-4.0/lib/codemirror.css">
+  <link href="../code-mirror/codemirror-4.0/theme/ambiance.css" rel="stylesheet">
+  <link href="../code-mirror/codemirror-4.0/theme/ambiance-mobile.css" rel="stylesheet">
+  <link href="../code-mirror/codemirror-4.0/theme/blackboard.css" rel="stylesheet">
+  <link href="../code-mirror/codemirror-4.0/theme/cobalt.css" rel="stylesheet">
+  <link href="../code-mirror/codemirror-4.0/theme/eclipse.css" rel="stylesheet">
+  <link href="../code-mirror/codemirror-4.0/theme/elegant.css" rel="stylesheet">
+  <link href="../code-mirror/codemirror-4.0/theme/erlang-dark.css" rel="stylesheet">
+  <link href="../code-mirror/codemirror-4.0/theme/lesser-dark.css" rel="stylesheet">
+  <link href="../code-mirror/codemirror-4.0/theme/midnight.css" rel="stylesheet">
+  <link href="../code-mirror/codemirror-4.0/theme/monokai.css" rel="stylesheet">
+  <link href="../code-mirror/codemirror-4.0/theme/neat.css" rel="stylesheet">
+  <link href="../code-mirror/codemirror-4.0/theme/night.css" rel="stylesheet">
+  <link href="../code-mirror/codemirror-4.0/theme/rubyblue.css" rel="stylesheet">
+  <link href="../code-mirror/codemirror-4.0/theme/solarized.css" rel="stylesheet">
+  <link href="../code-mirror/codemirror-4.0/theme/twilight.css" rel="stylesheet">
+  <link href="../code-mirror/codemirror-4.0/theme/vibrant-ink.css" rel="stylesheet">
+  <link href="../code-mirror/codemirror-4.0/theme/xq-dark.css" rel="stylesheet">
+  <link href="../code-mirror/codemirror-4.0/theme/xq-light.css" rel="stylesheet">
+  <link href="../code-mirror/codemirror-4.0/addon/fold/foldgutter.css" rel="stylesheet">
+  <style>
+    :host {
+      display: block;
+      position: relative;
+    }
+    
+    .CodeMirror {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+    }
+    
+    #codeMirrorArea {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+    
+    #requiredValidationMessage {
+      display: none;
+    }
+    
+    #requiredValidationMessage[invalid] {
+      display: block;
+      position: relative;
+    }
+    
+    .error {
+      color: rgb(255, 0, 0);
+      font-size: inherit;
+      font: inherit;
+    }
+    
+    .codeMirrorLabel {
+      font-size: 14px;
+      font-weight: bold;
+      display: block;
+      padding: 0 0 0.3em 0;
+    }
+  </style>
   <template>
-    <link rel="stylesheet" href="../code-mirror/codemirror-4.0/lib/codemirror.css">
-    <link href="../code-mirror/codemirror-4.0/theme/ambiance.css" rel="stylesheet">
-    <link href="../code-mirror/codemirror-4.0/theme/ambiance-mobile.css" rel="stylesheet">
-    <link href="../code-mirror/codemirror-4.0/theme/blackboard.css" rel="stylesheet">
-    <link href="../code-mirror/codemirror-4.0/theme/cobalt.css" rel="stylesheet">
-    <link href="../code-mirror/codemirror-4.0/theme/eclipse.css" rel="stylesheet">
-    <link href="../code-mirror/codemirror-4.0/theme/elegant.css" rel="stylesheet">
-    <link href="../code-mirror/codemirror-4.0/theme/erlang-dark.css" rel="stylesheet">
-    <link href="../code-mirror/codemirror-4.0/theme/lesser-dark.css" rel="stylesheet">
-    <link href="../code-mirror/codemirror-4.0/theme/midnight.css" rel="stylesheet">
-    <link href="../code-mirror/codemirror-4.0/theme/monokai.css" rel="stylesheet">
-    <link href="../code-mirror/codemirror-4.0/theme/neat.css" rel="stylesheet">
-    <link href="../code-mirror/codemirror-4.0/theme/night.css" rel="stylesheet">
-    <link href="../code-mirror/codemirror-4.0/theme/rubyblue.css" rel="stylesheet">
-    <link href="../code-mirror/codemirror-4.0/theme/solarized.css" rel="stylesheet">
-    <link href="../code-mirror/codemirror-4.0/theme/twilight.css" rel="stylesheet">
-    <link href="../code-mirror/codemirror-4.0/theme/vibrant-ink.css" rel="stylesheet">
-    <link href="../code-mirror/codemirror-4.0/theme/xq-dark.css" rel="stylesheet">
-    <link href="../code-mirror/codemirror-4.0/theme/xq-light.css" rel="stylesheet">
-    <link href="../code-mirror/codemirror-4.0/addon/fold/foldgutter.css" rel="stylesheet">
-    <style>
-      :host {
-        display: block;
-        position: relative;
-      }
-      
-      .CodeMirror {
-        position: absolute;
-        top: 0;
-        left: 0;
-        height: 100%;
-        width: 100%;
-      }
-      
-      #codeMirrorArea {
-        position: relative;
-        width: 100%;
-        height: 100%;
-      }
-      
-      #requiredValidationMessage {
-        display: none;
-      }
-      
-      #requiredValidationMessage[invalid] {
-        display: block;
-        position: relative;
-      }
-      
-      .error {
-        color: rgb(255, 0, 0);
-        font-size: inherit;
-        font: inherit;
-      }
-      
-      .codeMirrorLabel {
-        font-size: 14px;
-        font-weight: bold;
-        display: block;
-        padding: 0 0 0.3em 0;
-      }
-    </style>
     <div id="labelArea">
       <label class="codeMirrorLabel">{{label}}</label>
     </div>
     <div id="codeMirrorArea"></div>
     <div id="requiredValidationMessage" class="required">
       <p class="error">This field is required</p>
+    </div>
+    <div style="display: none">
+      <content id="content"></content>
     </div>
   </template>
 
@@ -138,12 +141,14 @@
     },
     _cursor: undefined,
     _isReady: false,
-    ready: function () {
+    attached: function () {
+      var distributedNode = Polymer.dom(this.$.content).getDistributedNodes()[0];
+      var dnTextContent = distributedNode ? distributedNode.textContent : '';
       if (!this.value) {
-        this.value = this.textContent;
+        this.value = dnTextContent;
       }
-      this.mirror = CodeMirror(this.$.codeMirrorArea, {
-        value: this.value || this.textContent,
+      this.mirror = CodeMirror(Polymer.dom(this.$.codeMirrorArea), {
+        value: this.value || dnTextContent,
         mode: this.mode,
         theme: this.theme,
         tabSize: this.tabSize,
