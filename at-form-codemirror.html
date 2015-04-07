@@ -43,14 +43,16 @@
     }
   </style>
   <template>
-    <div id="labelArea">
-      <label class="codeMirrorLabel">{{label}}</label>
-    </div>
+    <div id="wrapper" class="field">
+      <div id="labelArea">
+        <label class="codeMirrorLabel">{{label}}</label>
+      </div>
 
-    <code-mirror id="codeMirror"></code-mirror>
+      <code-mirror id="codeMirror"></code-mirror>
 
-    <div id="requiredValidationMessage" class="required">
-      <p class="error">This field is required</p>
+      <div id="requiredValidationMessage" class="required">
+        <p class="error">This field is required</p>
+      </div>
     </div>
   </template>
 </dom-module>
@@ -83,12 +85,18 @@
       noLineNumbers: {
         type: Boolean,
         value: false,
-        observer: 'lineNumbersChanged'
+        observer: 'noLineNumbersChanged'
       },
       required: {
         type: Boolean,
         value: false,
         observer: 'requiredChanged'
+      },
+      valid: {
+        type: Boolean,
+        value: true,
+        readOnly: true,
+        notify: true
       },
       disabled: {
         type: Boolean,
@@ -100,16 +108,17 @@
         value: '',
       }
     },
-    _cursor: undefined,
     _isReady: false,
-    _cmInstace: undefined,
+    _cmInstance: undefined,
+    _isMirrorChange: false,
     attached: function () {
-      var cmInstance = this._cmInstace = this.$.codeMirror.mirror;
+      var cmInstance = this._cmInstace = this.$.codeMirror;
       var self = this;
-      cmInstance.on('change', function (codeMirror, changeObj) {
-        self.requiredChanged();
-        self.value = codeMirror.getValue();
-      });
+      cmInstance.addEventListener('value-changed', function () {
+        self._isMirrorChange = true;
+        self.value = this.value;
+        self._isMirrorChange = false;
+      })
 
       this._isReady = true;
 
@@ -122,46 +131,45 @@
         }
         this.value = tc;
       }
+
+      this.updateValidState();
     },
     refresh: function () {
       if (this._isReady) {
         this._cmInstace.refresh();
       }
     },
+    focus: function () {
+      if (this._isReady) {
+        this._cmInstace.focus();
+      }
+    },
     valueChanged: function () {
       if (this._isReady) {
-        // we remember the cursor because mirror.setValue() sets the cursor to (0, 0)
-        this._cursor = this._cmInstace.getCursor();
-        this._cmInstace.setValue(this.value);
-        this.requiredChanged();
-        // we restore the previous cursor position
-        this._cmInstace.setCursor(this._cursor);
-        this.updateInvalidAttr();
+        if (!this._isMirrorChange) {
+          this._cmInstace.value = this.value;
+        }
+        this.updateValidState();
       }
     },
     modeChanged: function () {
       if (this._isReady) {
-        this._cmInstace.setOption('mode', this.mode);
+        this._cmInstace.mode = this.mode;
       }
     },
     themeChanged: function () {
       if (this._isReady) {
-        this._cmInstace.setOption('theme', this.theme);
+        this._cmInstace.theme = this.theme;
       }
     },
     tabSizeChanged: function () {
       if (this._isReady) {
-        this._cmInstace.setOption('tabSize', this.tabSize);
+        this._cmInstace.tabSize = this.tabSize;
       }
     },
-    lineNumbersChanged: function () {
+    noLineNumbersChanged: function () {
       if (this._isReady) {
-        this._cmInstace.setOption('lineNumbers', this.lineNumbers);
-      }
-    },
-    focus: function () {
-      if (this._isReady) {
-        this._cmInstace.focus();
+        this._cmInstace.noLineNumbers = this.noLineNumbers;
       }
     },
     disabledChanged: function (oldValue, newValue) {
@@ -171,16 +179,21 @@
     },
     requiredChanged: function (oldValue, newValue) {
       if (this._isReady) {
-
-        this.updateInvalidAttr();
+        this.updateValidState();
       }
     },
-    updateInvalidAttr: function () {
-      if (this.required && (this.value === undefined || this.value == '')) {
+    updateValidState: function () {
+      var validValue = this.required ? this.value !== undefined && this.value !== '' : true;
+
+      if (!validValue) {
         this.$.requiredValidationMessage.setAttribute('invalid', true);
       } else {
         this.$.requiredValidationMessage.removeAttribute('invalid');
       }
+
+      this.toggleClass('error', !validValue, this.$.wrapper);
+
+      this._setValid(validValue);
     },
     autoGrow: function (input) {
       input.oninput = function () {
