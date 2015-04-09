@@ -6,6 +6,8 @@
     :host {
       display: block;
       position: relative;
+      width: 100%;
+      height: 100%;
     }
     
     #codeMirrorArea {
@@ -110,15 +112,12 @@
     },
     _isReady: false,
     _cmInstance: undefined,
-    _isMirrorChange: false,
     attached: function () {
       var cmInstance = this._cmInstace = this.$.codeMirror;
       var self = this;
       cmInstance.addEventListener('value-changed', function () {
-        self._isMirrorChange = true;
         self.value = this.value;
-        self._isMirrorChange = false;
-      })
+      });
 
       this._isReady = true;
 
@@ -146,9 +145,7 @@
     },
     valueChanged: function () {
       if (this._isReady) {
-        if (!this._isMirrorChange) {
-          this._cmInstace.value = this.value;
-        }
+        this._cmInstace.value = this.value;
         this.updateValidState();
       }
     },

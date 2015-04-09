@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>at-form-codemirror</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script src="../webcomponentsjs/webcomponents.js"></script>
+  <link rel="import" href="at-form-codemirror.html" />
+  <style>
+    body {
+      margin: 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+    }
+    
+    .h50w100 {
+      height: 50%;
+      width: 100%;
+    }
+    
+    .h90w100 {
+      height: 90%;
+      width: 100%;
+    }
+  </style>
+
+</head>
+
+<body>
+  <div class="h50w100">
+    <h2>This is demo for at-form-codemirror 1</h2>
+    <div class="h19w100">
+      <at-form-codemirror id="codeMirror1" required="true">
+        Pera
+      </at-form-codemirror>
+    </div>
+  </div>
+  <div class="h50w100">
+    <h2>This is demo for at-form-codemirror 2</h2>
+    <div class="h19w100">
+      <at-form-codemirror id="codeMirror2" required="true">
+        Pera 2
+      </at-form-codemirror>
+    </div>
+  </div>
+  <script>
+    document.addEventListener('WebComponentsReady', function () {
+      var codeMirror1 = document.getElementById('codeMirror1');
+
+      codeMirror1.value = "Djura 1";
+
+      var codeMirror2 = document.getElementById('codeMirror2');
+
+      codeMirror2.value = "Djura 2";
+
+    });
+  </script>
+</body>
+
+</html>
