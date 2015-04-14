@@ -99,12 +99,11 @@
     },
     _isReady: false,
     _cmInstance: undefined,
-    attached: function () {
+    ready: function () {
       var cmInstance = this._cmInstace = this.$.codeMirror;
       var self = this;
       cmInstance.addEventListener('value-changed', function () {        
         self.value = this.value;
-        console.log('at-form-codemirror, value changed');
       });
 
       this._isReady = true;
