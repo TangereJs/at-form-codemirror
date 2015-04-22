@@ -162,7 +162,7 @@
     },
     disabledChanged: function (oldValue, newValue) {
       if (this._isReady) {
-        this._cmInstance.setOption('readOnly', this.disabled);
+        this._cmInstance.disabled = this.disabled;
       }
     },
     requiredChanged: function (oldValue, newValue) {
