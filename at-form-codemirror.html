@@ -119,7 +119,7 @@
         this.value = tc;
       }
 
-      this.updateValidState();
+      this._updateValidState();
     },
     attached: function () {
       this._cmInstance.value = this.value;
@@ -137,7 +137,7 @@
     valueChanged: function () {
       if (this._isReady) {
         this._cmInstance.value = this.value;
-        this.updateValidState();
+        this._updateValidState();
       }
     },
     modeChanged: function () {
@@ -160,22 +160,29 @@
         this._cmInstance.noLineNumbers = this.noLineNumbers;
       }
     },
-    disabledChanged: function (oldValue, newValue) {
+    disabledChanged: function (newValue, oldValue) {
       if (this._isReady) {
         this._cmInstance.disabled = this.disabled;
+        if (this.disabled) {
+          this.toggleClass('error', false, this.$.wrapper);
+        } else {
+          this.toggleClass('error', !this.valid, this.$.wrapper);
+        }
       }
     },
     requiredChanged: function (oldValue, newValue) {
       if (this._isReady) {
-        this.updateValidState();
+        this._updateValidState();
       }
     },
-    updateValidState: function () {
+    _updateValidState: function () {
       var validValue = this.required ? this.value !== undefined && this.value !== '' : true;
-
-      this.toggleClass('error', !validValue, this.$.wrapper);
-
       this._setValid(validValue);
+    },
+    validate: function () {
+      this._updateValidState();
+      this.toggleClass('error', !this.valid, this.$.wrapper);
+      return this.valid;
     },
     autoGrow: function (input) {
       input.oninput = function () {
