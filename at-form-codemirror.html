@@ -1,5 +1,6 @@
 <link rel="import" href="../polymer/polymer.html" />
 <link rel="import" href="../code-mirror/code-mirror.html" />
+<link rel="import" href="../at-core-theme/at-core-theme.html">
 
 <dom-module id="at-form-codemirror">
   <style>
@@ -29,11 +30,10 @@
       padding: 0 0 0.3em 0;
     }
     
-    code-mirror {
-      width: 100%;
-      min-height: 100px;
+    #wrapper {
       height: 100%;
     }
+
   </style>
   <template>
     <div id="wrapper" class="field">
