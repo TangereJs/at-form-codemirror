@@ -120,6 +120,7 @@
       }
 
       this._updateValidState();
+      this.disabledChanged(this.disabled, this.disabled);
     },
     attached: function () {
       this._cmInstance.value = this.value;

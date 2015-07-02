@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>at-form-codemirror</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script src="../webcomponentsjs/webcomponents.js"></script>
+  <link rel="import" href="at-form-codemirror.html" />
+  <style>
+    body {
+      margin: 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+    }
+    
+    .h50w100 {
+      height: 50%;
+      width: 100%;
+    }
+    
+    .h90w100 {
+      height: 90%;
+      width: 100%;
+    }
+  </style>
+
+</head>
+
+<body>
+  <div class="h50w100">
+    <h2>This is disabled at-form-codemirror</h2>
+    <div class="h90w100">
+      <at-form-codemirror id="codeMirror1" disabled="true" label="This is disabled at-form-codemirror">
+      </at-form-codemirror>
+    </div>
+  </div>
+  <div class="h50w100">
+    <h2>This is required at-form-codemirror</h2>
+    <div>
+      <button id="validate">Validate</button><p>Component is currently: <b><span id="validText"></span></b></p>
+    </div>    
+    <div class="h90w100">
+      <at-form-codemirror id="codeMirror2" required="true" label="This is required at-form-codemirror">
+      </at-form-codemirror>
+    </div>
+  </div>
+  <script>
+    document.addEventListener('WebComponentsReady', function () {
+      var codeMirror1 = document.getElementById('codeMirror1');
+
+      codeMirror1.value = "This is disabled at-form-codemirror";
+
+      var codeMirror2 = document.getElementById('codeMirror2');
+
+      codeMirror2.value = "This is required at-form-codemirror";
+      
+      var validateBtn = document.getElementById('validate');
+      var validText = document.getElementById('validText');                                              
+      
+      validateBtn.addEventListener('click', function(){
+        codeMirror2.validate();
+        updateValidText(codeMirror2, validText);
+      });
+      
+      function updateValidText(codeMirror, elem){
+        if(codeMirror.valid) {
+          elem.textContent = 'valid';
+        } else {
+          elem.textContent = 'invalid';
+        }
+      }
+      
+      updateValidText(codeMirror2, validText);
+    });
+  </script>
+</body>
+
+</html>
