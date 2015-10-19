@@ -29,10 +29,13 @@
       padding: 0 0 0.3em 0;
     }
 
+    .hide-label {
+      display: none;
+    }
   </style>
   <template>
     <div id="wrapper" class="field">
-      <div id="labelArea">
+      <div id="labelContainer">
         <label class="codeMirrorLabel">{{label}}</label>
       </div>
 
@@ -50,6 +53,11 @@
         value: '',
         notify: true,
         observer: 'valueChanged'
+      },
+      hideTitle: {
+        type: Boolean,
+        value: false,
+        observer: 'hideTitleChanged'
       },
       mode: {
         type: String,
@@ -116,6 +124,9 @@
 
       this._updateValidState();
       this.disabledChanged(this.disabled, this.disabled);
+    },
+    hideTitleChanged: function (newValue, oldValue) {
+      this.toggleClass("hide-label", newValue, this.$.labelContainer);
     },
     attached: function () {
       this._cmInstance.value = this.value;
