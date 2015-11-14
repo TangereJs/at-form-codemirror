@@ -62,7 +62,9 @@
       mode: {
         type: String,
         value: 'htmlmixed',
-        observer: 'modeChanged'
+        observer: 'modeChanged',
+	    xtype: "enum",
+        xvaluelist: "htmlmixed,javascript,css,markdown,sql,xml"
       },
       theme: {
         type: String,
