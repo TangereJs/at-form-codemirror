@@ -63,7 +63,7 @@
         type: String,
         value: 'htmlmixed',
         observer: 'modeChanged',
-	    xtype: "enum",
+        xtype: "enum",
         xvaluelist: "htmlmixed,javascript,css,markdown,sql,xml"
       },
       theme: {
@@ -102,13 +102,20 @@
         value: '',
       }
     },
+    $meta: {
+      title: "Code",
+      form: {
+        type: "string",
+        xtype: "code"
+      }
+    },
     _isReady: false,
     _scopeCssViaAttr: true,
     _cmInstance: undefined,
-    ready: function () {
+    ready: function() {
       var cmInstance = this._cmInstance = this.$.codeMirror;
       var self = this;
-      cmInstance.addEventListener('value-changed', function () {
+      cmInstance.addEventListener('value-changed', function() {
         self.value = this.value;
       });
 
@@ -127,49 +134,49 @@
       this._updateValidState();
       this.disabledChanged(this.disabled, this.disabled);
     },
-    hideTitleChanged: function (newValue, oldValue) {
+    hideTitleChanged: function(newValue, oldValue) {
       this.toggleClass("hide-label", newValue, this.$.labelContainer);
     },
-    attached: function () {
+    attached: function() {
       this._cmInstance.value = this.value;
     },
-    refresh: function () {
+    refresh: function() {
       if (this._isReady) {
         this._cmInstance.refresh();
       }
     },
-    focus: function () {
+    focus: function() {
       if (this._isReady) {
         this._cmInstance.focus();
       }
     },
-    valueChanged: function () {
+    valueChanged: function() {
       if (this._isReady) {
         this._cmInstance.value = this.value;
         this._updateValidState();
       }
     },
-    modeChanged: function () {
+    modeChanged: function() {
       if (this._isReady) {
         this._cmInstance.mode = this.mode;
       }
     },
-    themeChanged: function () {
+    themeChanged: function() {
       if (this._isReady) {
         this._cmInstance.theme = this.theme;
       }
     },
-    tabSizeChanged: function () {
+    tabSizeChanged: function() {
       if (this._isReady) {
         this._cmInstance.tabSize = this.tabSize;
       }
     },
-    noLineNumbersChanged: function () {
+    noLineNumbersChanged: function() {
       if (this._isReady) {
         this._cmInstance.noLineNumbers = this.noLineNumbers;
       }
     },
-    disabledChanged: function (newValue, oldValue) {
+    disabledChanged: function(newValue, oldValue) {
       if (this._isReady) {
         this._cmInstance.disabled = this.disabled;
         if (this.disabled) {
@@ -179,22 +186,22 @@
         }
       }
     },
-    requiredChanged: function (oldValue, newValue) {
+    requiredChanged: function(oldValue, newValue) {
       if (this._isReady) {
         this._updateValidState();
       }
     },
-    _updateValidState: function () {
+    _updateValidState: function() {
       var validValue = this.required ? this.value !== undefined && this.value !== '' : true;
       this._setValid(validValue);
     },
-    validate: function () {
+    validate: function() {
       this._updateValidState();
       this.toggleClass('error', !this.valid, this.$.wrapper);
       return this.valid;
     },
-    autoGrow: function (input) {
-      input.oninput = function () {
+    autoGrow: function(input) {
+      input.oninput = function() {
         this.style.height = 'auto';
         this.style.height = this.scrollHeight + 'px';
         window.scrollTo(window.scrollLeft, (this.scrollTop + this.scrollHeight));
