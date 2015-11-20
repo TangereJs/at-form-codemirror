@@ -54,10 +54,10 @@
         notify: true,
         observer: 'valueChanged'
       },
-      hideTitle: {
+      hideLabel: {
         type: Boolean,
         value: false,
-        observer: 'hideTitleChanged'
+        observer: 'hideLabelChanged'
       },
       mode: {
         type: String,
@@ -132,7 +132,7 @@
       this._updateValidState();
       this.disabledChanged(this.disabled, this.disabled);
     },
-    hideTitleChanged: function(newValue, oldValue) {
+    hideLabelChanged: function(newValue, oldValue) {
       this.toggleClass("hide-label", newValue, this.$.labelContainer);
     },
     attached: function() {
