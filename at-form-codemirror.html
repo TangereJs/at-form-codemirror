@@ -106,6 +106,10 @@
       title: "Code",
       type: "string",
       xtype: "code"
+    }, {
+      title: "JSON code",
+      type: "object",
+      xtype: "json"
     }],
     _isReady: false,
     _scopeCssViaAttr: true,
@@ -148,8 +152,13 @@
         this._cmInstance.focus();
       }
     },
-    valueChanged: function() {
+    valueChanged: function(newValue, oldValue) {
       if (this._isReady) {
+        if (Object.prototype.toString.call(newValue) === "[object Object]"){
+          newValue = JSON.stringify(newValue, null, ' ');
+          this.value = newValue;
+          return;
+        }
         this._cmInstance.value = this.value;
         this._updateValidState();
       }
