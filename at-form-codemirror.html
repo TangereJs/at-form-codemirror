@@ -29,7 +29,7 @@
       padding: 0 0 0.3em 0;
     }
 
-    .hide-label {
+    .hidden {
       display: none;
     }
   </style>
@@ -100,6 +100,17 @@
       label: {
         type: String,
         value: '',
+      },
+      /**
+       * Hides the element. When hidden nothing is displayed for the element
+       * @property hide
+       * @type Boolean
+       * @default false
+       */
+      hide: {
+        type: Boolean,
+        value: false,
+        observer: 'hideChanged'
       }
     },
     $meta: [{
@@ -114,6 +125,13 @@
     _isReady: false,
     _scopeCssViaAttr: true,
     _cmInstance: undefined,
+    hideChanged: function (newValue, oldValue) {
+      var wrapper = Polymer.dom(this.root).querySelector('.wrapper');
+      this.toggleClass('hidden', newValue, wrapper);
+      if (!newValue) {
+        this.refresh();
+      }
+    },
     ready: function() {
       var cmInstance = this._cmInstance = this.$.codeMirror;
       var self = this;
@@ -137,7 +155,7 @@
       this.disabledChanged(this.disabled, this.disabled);
     },
     hideLabelChanged: function(newValue, oldValue) {
-      this.toggleClass("hide-label", newValue, this.$.labelContainer);
+      this.toggleClass("hidden", newValue, this.$.labelContainer);
     },
     attached: function() {
       this._cmInstance.value = this.value;
