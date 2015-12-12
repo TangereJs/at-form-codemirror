@@ -178,7 +178,9 @@
     },
     valueChanged: function(newValue, oldValue) {
       if (this._isReady) {
-        if (Object.prototype.toString.call(newValue) === "[object Object]"){
+        // *ij* [object SpeechRecognition]
+        // well at-core-mic recognition property is of that type and it needs to be strigified so there you have it
+        if (Object.prototype.toString.call(newValue) === "[object Object]" || Object.prototype.toString.call(newValue) === "[object SpeechRecognition]"){
           newValue = JSON.stringify(newValue, null, ' ');
           this.value = newValue;
           return;
