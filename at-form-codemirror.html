@@ -135,6 +135,7 @@
       this.toggleClass('hidden', newValue, wrapper);
       if (!newValue) {
         this.refresh();
+        this.$.codeMirror.maxLinesChanged(this.maxLines, this.maxLines);
       }
     },
     ready: function() {
