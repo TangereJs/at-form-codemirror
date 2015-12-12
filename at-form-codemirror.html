@@ -39,7 +39,7 @@
         <label class="codeMirrorLabel">{{label}}</label>
       </div>
 
-      <code-mirror id="codeMirror"></code-mirror>
+      <code-mirror id="codeMirror" max-lines={{maxLines}}></code-mirror>
     </div>
   </template>
 </dom-module>
@@ -111,6 +111,11 @@
         type: Boolean,
         value: false,
         observer: 'hideChanged'
+      },
+      maxLines: {
+        type: Number,
+        value: 14,
+        observer: 'maxLinesChanged'
       }
     },
     $meta: [{
@@ -216,6 +221,9 @@
         this._updateValidState();
       }
     },
+    maxLinesChanged: function (newValue, oldValue) {
+      if (this._isReady) { }
+    },
     _updateValidState: function() {
       var validValue = this.required ? this.value !== undefined && this.value !== '' : true;
       this._setValid(validValue);
@@ -224,17 +232,6 @@
       this._updateValidState();
       this.toggleClass('error', !this.valid, this.$.wrapper);
       return this.valid;
-    },
-    autoGrow: function(input) {
-      input.oninput = function() {
-        this.style.height = 'auto';
-        this.style.height = this.scrollHeight + 'px';
-        window.scrollTo(window.scrollLeft, (this.scrollTop + this.scrollHeight));
-      };
-
-      var inputEvent = document.createEvent('Event');
-      inputEvent.initEvent('input', true, true);
-      input.dispatchEvent(inputEvent);
     }
   });
 </script>
