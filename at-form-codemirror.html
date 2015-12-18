@@ -164,7 +164,7 @@
       this.toggleClass("hidden", newValue, this.$.labelContainer);
     },
     attached: function() {
-      this._cmInstance.value = this.value;
+      this._cmInstance.value = String(this.value);
     },
     refresh: function() {
       if (this._isReady) {
@@ -185,7 +185,7 @@
           this.value = newValue;
           return;
         }
-        this._cmInstance.value = this.value;
+        this._cmInstance.value = String(this.value);
         this._updateValidState();
       }
     },
