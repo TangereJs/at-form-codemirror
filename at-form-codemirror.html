@@ -1,6 +1,7 @@
 <link rel="import" href="../polymer/polymer.html" />
 <link rel="import" href="../code-mirror/code-mirror.html" />
 <link rel="import" href="../at-core-theme/at-core-theme.html">
+<link rel="import" href="../at-form-behaviors/at-form-behaviors-validation.html">
 
 <dom-module id="at-form-codemirror">
   <style>
@@ -16,10 +17,16 @@
       height: 100%;
     }
 
+    --error-color: #e41e2b;
+
     .error {
-      color: rgb(255, 0, 0);
+      color: var(--error-color);
       font-size: inherit;
       font: inherit;
+    }
+
+    .CodeMirror-code.error {
+      color: var(--error-color);
     }
 
     .codeMirrorLabel {
@@ -35,11 +42,13 @@
   </style>
   <template>
     <div id="wrapper" class="field">
-      <div id="labelContainer">
+      <div id="labelContainer" class="label-container">
         <label class="codeMirrorLabel">{{label}}</label>
       </div>
-
       <code-mirror id="codeMirror" max-lines={{maxLines}}></code-mirror>
+      <div id="hintContainer" class="hint-container">
+        <p id="errorHtml" class="hint"></p>
+      </div>
     </div>
   </template>
 </dom-module>
@@ -47,12 +56,14 @@
 <script>
   Polymer({
     is: 'at-form-codemirror',
+    behaviors: [AtFormBehaviors.AtFormBehaviorsValidation],
     properties: {
       value: {
         type: String,
         value: '',
         notify: true,
-        observer: 'valueChanged'
+        observer: 'valueChanged',
+        xtype: "textarea"
       },
       hideLabel: {
         type: Boolean,
@@ -85,12 +96,6 @@
         type: Boolean,
         value: false,
         observer: 'requiredChanged'
-      },
-      valid: {
-        type: Boolean,
-        value: true,
-        readOnly: true,
-        notify: true
       },
       disabled: {
         type: Boolean,
@@ -127,18 +132,21 @@
       type: "object",
       xtype: "json"
     }],
-    _isReady: false,
     _scopeCssViaAttr: true,
     _cmInstance: undefined,
     hideChanged: function (newValue, oldValue) {
-      var wrapper = Polymer.dom(this.root).querySelector('.wrapper');
+      var wrapper = this.$.wrapper;
       this.toggleClass('hidden', newValue, wrapper);
       if (!newValue) {
         this.refresh();
         this.$.codeMirror.maxLinesChanged(this.maxLines, this.maxLines);
       }
+      if (this._isReady) {
+        this.validate();
+      }
     },
     ready: function() {
+      this._isReady = false;
       var cmInstance = this._cmInstance = this.$.codeMirror;
       var self = this;
       cmInstance.addEventListener('value-changed', function() {
@@ -157,7 +165,6 @@
         this.value = tc;
       }
 
-      this._updateValidState();
       this.disabledChanged(this.disabled, this.disabled);
     },
     hideLabelChanged: function(newValue, oldValue) {
@@ -186,7 +193,7 @@
           return;
         }
         this._cmInstance.value = String(this.value);
-        this._updateValidState();
+        this.validate();
       }
     },
     modeChanged: function() {
@@ -217,24 +224,22 @@
         } else {
           this.toggleClass('error', !this.valid, this.$.wrapper);
         }
+        this.validate();
       }
     },
     requiredChanged: function(oldValue, newValue) {
       if (this._isReady) {
-        this._updateValidState();
+        this.validate();
       }
     },
     maxLinesChanged: function (newValue, oldValue) {
       if (this._isReady) { }
     },
-    _updateValidState: function() {
-      var validValue = this.required ? this.value !== undefined && this.value !== '' : true;
-      this._setValid(validValue);
-    },
-    validate: function() {
-      this._updateValidState();
-      this.toggleClass('error', !this.valid, this.$.wrapper);
-      return this.valid;
+    _updateUIValidState: function(isValid) {
+      var wrapper = this.$.wrapper;
+      this.toggleClass('error', !isValid, wrapper);
+      var codeMirrorCode = wrapper.getElementsByClassName('CodeMirror-code')[0];
+      this.toggleClass('error', !isValid, codeMirrorCode);
     }
   });
 </script>
