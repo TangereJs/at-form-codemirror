@@ -121,6 +121,11 @@
         type: Number,
         value: 14,
         observer: 'maxLinesChanged'
+      },
+      maxChars: {
+        type: Number,
+        value: 0,
+        observer: 'maxCharsChanged'
       }
     },
     $meta: [{
@@ -132,6 +137,9 @@
       type: "object",
       xtype: "json"
     }],
+    _errorMessageTemplates: {
+      maxCharsHint: "You can not enter more than {maxChars} characters."
+    },
     _scopeCssViaAttr: true,
     _cmInstance: undefined,
     hideChanged: function (newValue, oldValue) {
@@ -164,6 +172,8 @@
         }
         this.value = tc;
       }
+
+      this._validationFunctions.push(this._validateMaxChars.bind(this));
 
       this.disabledChanged(this.disabled, this.disabled);
     },
@@ -234,6 +244,28 @@
     },
     maxLinesChanged: function (newValue, oldValue) {
       if (this._isReady) { }
+    },
+    maxCharsChanged: function (newValue, oldValue) {
+      if (this._isReady) {
+        this.validate();
+      }
+    },
+    _validateMaxChars: function (value) {
+      var valid = true;
+
+      try {
+        var maxChars = parseInt(this.maxChars);
+        if (maxChars > 0) {
+          var charCount = value.length;
+          valid = (maxChars + 1) > charCount;
+
+          this._errorMessage = this._errorMessageTemplates.maxCharsHint.replace("{maxChars}", this.maxChars);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+
+      return valid;
     },
     _updateUIValidState: function(isValid) {
       var wrapper = this.$.wrapper;
