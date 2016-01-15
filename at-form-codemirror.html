@@ -9,6 +9,7 @@
       display: block;
       position: relative;
       width: 100%;
+      --error-color: #e41e2b;
     }
 
     #codeMirrorArea {
@@ -17,7 +18,9 @@
       height: 100%;
     }
 
-    --error-color: #e41e2b;
+    .content-container.error {
+      margin: 0 0 2px;
+    }
 
     .error {
       color: var(--error-color);
@@ -41,11 +44,14 @@
     }
   </style>
   <template>
+    <at-core-theme></at-core-theme>
     <div id="wrapper" class="field">
       <div id="labelContainer" class="label-container">
         <label class="codeMirrorLabel">{{label}}</label>
       </div>
-      <code-mirror id="codeMirror" max-lines={{maxLines}}></code-mirror>
+      <div id="contentContainer" class="content-container">
+        <code-mirror id="codeMirror" max-lines={{maxLines}}></code-mirror>
+      </div>
       <div id="hintContainer" class="hint-container">
         <p id="errorHtml" class="hint"></p>
       </div>
@@ -270,6 +276,8 @@
     _updateUIValidState: function(isValid) {
       var wrapper = this.$.wrapper;
       this.toggleClass('error', !isValid, wrapper);
+      var contentContainer = this.$.contentContainer;
+      this.toggleClass('error', !isValid, contentContainer);
       var codeMirrorCode = wrapper.getElementsByClassName('CodeMirror-code')[0];
       this.toggleClass('error', !isValid, codeMirrorCode);
     }
