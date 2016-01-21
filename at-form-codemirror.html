@@ -12,7 +12,7 @@
       --error-color: #e41e2b;
     }
 
-    #codeMirrorArea {
+    #codeMirror {
       position: relative;
       width: 100%;
       height: 100%;
@@ -20,15 +20,8 @@
 
     .content-container.error {
       margin: 0 0 2px;
-    }
-
-    .error {
-      color: var(--error-color);
       font-size: inherit;
       font: inherit;
-    }
-
-    .CodeMirror-code.error {
       color: var(--error-color);
     }
 
@@ -37,6 +30,22 @@
       font-weight: bold;
       display: block;
       padding: 0 0 0.3em 0;
+    }
+
+    .label-container.error > label {
+      color: var(--error-color);
+    }
+
+    .hint-container.error > p {
+      color: var(--error-color);
+    }
+
+    .label-container.disabled > label {
+      opacity: 0.5;
+    }
+
+    .content-container.disabled {
+      opacity: 0.5;
     }
 
     .hidden {
@@ -235,11 +244,12 @@
     disabledChanged: function(newValue, oldValue) {
       if (this._isReady) {
         this._cmInstance.disabled = this.disabled;
-        if (this.disabled) {
-          this.toggleClass('error', false, this.$.wrapper);
-        } else {
-          this.toggleClass('error', !this.valid, this.$.wrapper);
-        }
+
+        var labelContainer = this.$.labelContainer;
+        this.toggleClass('disabled', newValue, labelContainer);
+        var contentContainer = this.$.contentContainer;
+        this.toggleClass('disabled', newValue, contentContainer);
+
         this.validate();
       }
     },
@@ -274,12 +284,15 @@
       return valid;
     },
     _updateUIValidState: function(isValid) {
-      var wrapper = this.$.wrapper;
-      this.toggleClass('error', !isValid, wrapper);
+      var labelContainer = this.$.labelContainer;
+      this.toggleClass('error', !isValid, labelContainer);
       var contentContainer = this.$.contentContainer;
       this.toggleClass('error', !isValid, contentContainer);
-      var codeMirrorCode = wrapper.getElementsByClassName('CodeMirror-code')[0];
+      var wrapper = this.$.wrapper;
+      var codeMirrorCode = wrapper.getElementsByClassName('CodeMirror-lines')[0];
       this.toggleClass('error', !isValid, codeMirrorCode);
+      var hintContainer = this.$.hintContainer;
+      this.toggleClass('error', !isValid, hintContainer);
     }
   });
 </script>
