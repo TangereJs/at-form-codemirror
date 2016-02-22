@@ -212,7 +212,7 @@
       if (this._isReady) {
         // *ij* [object SpeechRecognition]
         // well at-core-mic recognition property is of that type and it needs to be strigified so there you have it
-        if (Object.prototype.toString.call(newValue) === "[object Object]" || Object.prototype.toString.call(newValue) === "[object SpeechRecognition]"){
+        if (this._isObject(newValue) || this._isArray(newValue) || this._isSpeechRecognition(newValue)){
           newValue = JSON.stringify(newValue, null, ' ');
           this.value = newValue;
           return;
@@ -293,6 +293,15 @@
       this.toggleClass('error', !isValid, codeMirrorCode);
       var hintContainer = this.$.hintContainer;
       this.toggleClass('error', !isValid, hintContainer);
+    },
+    _isObject: function (obj) {
+      return Object.prototype.toString.call(obj) === "[object Object]";
+    },
+    _isSpeechRecognition: function (obj) {
+      return Object.prototype.toString.call(obj) === "[object SpeechRecognition]";
+    },
+    _isArray: function (obj) {
+      return Object.prototype.toString.call(obj) === "[object Array]";
     }
   });
 </script>
