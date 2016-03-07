@@ -78,7 +78,8 @@
         value: '',
         notify: true,
         observer: 'valueChanged',
-        xtype: "textarea"
+        xtype: "textarea",
+        title: 'Value'
       },
       hideLabel: {
         type: Boolean,
@@ -110,16 +111,18 @@
       required: {
         type: Boolean,
         value: false,
-        observer: 'requiredChanged'
+        observer: 'requiredChanged',
+        title: 'Input requred'
       },
       disabled: {
         type: Boolean,
         value: false,
-        observer: 'disabledChanged'
+        observer: 'disabledChanged',
+        title: 'Field value can not be changed'
       },
       label: {
         type: String,
-        value: '',
+        value: ''
       },
       /**
        * Hides the element. When hidden nothing is displayed for the element
@@ -130,7 +133,8 @@
       hide: {
         type: Boolean,
         value: false,
-        observer: 'hideChanged'
+        observer: 'hideChanged',
+        title: 'Field is invisible'
       },
       maxLines: {
         type: Number,
@@ -140,7 +144,8 @@
       maxChars: {
         type: Number,
         value: 0,
-        observer: 'maxCharsChanged'
+        observer: 'maxCharsChanged',
+        title: 'Maximum number of characters'
       }
     },
     $meta: [{
