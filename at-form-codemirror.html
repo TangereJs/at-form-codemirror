@@ -1,69 +1,28 @@
-<link rel="import" href="../polymer/polymer.html" />
-<link rel="import" href="../code-mirror/code-mirror.html" />
-<link rel="import" href="../at-core-theme/at-core-theme.html">
+<link rel="import" href="../tangere/tangere.html">
+<link rel="import" href="../at-theme/at-theme.html">
+<link rel="import" href="../at-i18n/at-i18n-behavior.html">
+<link rel="import" href="../code-mirror/code-mirror.html">
 <link rel="import" href="../at-form-behaviors/at-form-behaviors-validation.html">
+<link rel="import" href="../iron-label/iron-label.html">
 
 <dom-module id="at-form-codemirror">
+  <template>
+  <style include="at-form-common"></style>
   <style>
+    :host * {
+      box-sizing: border-box;
+    }
+
     :host {
-      display: block;
-      position: relative;
-      width: 100%;
-      --error-color: #e41e2b;
-    }
-
-    #codeMirror {
-      position: relative;
-      width: 100%;
-      height: 100%;
-    }
-
-    .content-container.error {
-      margin: 0 0 2px;
-      font-size: inherit;
-      font: inherit;
-      color: var(--error-color);
-    }
-
-    .codeMirrorLabel {
-      font-size: 14px;
-      font-weight: bold;
-      display: block;
-      padding: 0 0 0.3em 0;
-    }
-
-    .label-container.error > label {
-      color: var(--error-color);
-    }
-
-    .hint-container.error > p {
-      color: var(--error-color);
-    }
-
-    .label-container.disabled > label {
-      opacity: 0.5;
-    }
-
-    .content-container.disabled {
-      opacity: 0.5;
-    }
-
-    .hidden {
-      display: none;
+      @apply(--at-form-host);
     }
   </style>
-  <template>
-    <at-core-theme></at-core-theme>
-    <div id="wrapper" class="field">
-      <div id="labelContainer" class="label-container">
-        <label class="codeMirrorLabel">{{label}}</label>
-      </div>
-      <div id="contentContainer" class="content-container">
+    <div id="atContainer" class="at-container">
+      <iron-label id="label" for="codeMirror">{{label}}</iron-label>
+      <div id="contentContainer" class="at-content-container">
         <code-mirror id="codeMirror" max-lines={{maxLines}}></code-mirror>
       </div>
-      <div id="hintContainer" class="hint-container">
-        <p id="errorHtml" class="hint"></p>
-      </div>
+      <div id="hint"></div>
     </div>
   </template>
 </dom-module>
@@ -71,7 +30,7 @@
 <script>
   Polymer({
     is: 'at-form-codemirror',
-    behaviors: [AtFormBehaviors.AtFormBehaviorsValidation],
+    behaviors: [Tangere.behaviors.i18n, Tangere.behaviors.formValidation],
     properties: {
       value: {
         type: String,
@@ -162,11 +121,10 @@
     _errorMessageTemplates: {
       maxCharsHint: "You can not enter more than {maxChars} characters."
     },
-    _scopeCssViaAttr: true,
     _cmInstance: undefined,
     hideChanged: function (newValue, oldValue) {
-      var wrapper = this.$.wrapper;
-      this.toggleClass('hidden', newValue, wrapper);
+      var atContainer = this.$.atContainer;
+      this.toggleClass('hidden', newValue, atContainer);
       if (!newValue) {
         this.refresh();
         this.$.codeMirror.maxLinesChanged(this.maxLines, this.maxLines);
@@ -200,7 +158,7 @@
       this.disabledChanged(this.disabled, this.disabled);
     },
     hideLabelChanged: function(newValue, oldValue) {
-      this.toggleClass("hidden", newValue, this.$.labelContainer);
+      this.toggleClass("hidden", newValue, this.$.label);
     },
     attached: function() {
       this._cmInstance.value = String(this.value);
@@ -252,8 +210,8 @@
       if (this._isReady) {
         this._cmInstance.disabled = this.disabled;
 
-        var labelContainer = this.$.labelContainer;
-        this.toggleClass('disabled', newValue, labelContainer);
+        var label = this.$.label;
+        this.toggleClass('disabled', newValue, label);
         var contentContainer = this.$.contentContainer;
         this.toggleClass('disabled', newValue, contentContainer);
 
@@ -291,15 +249,15 @@
       return valid;
     },
     _updateUIValidState: function(isValid) {
-      var labelContainer = this.$.labelContainer;
-      this.toggleClass('error', !isValid, labelContainer);
+      var label = this.$.label;
+      this.toggleClass('error', !isValid, label);
       var contentContainer = this.$.contentContainer;
       this.toggleClass('error', !isValid, contentContainer);
-      var wrapper = this.$.wrapper;
-      var codeMirrorCode = wrapper.getElementsByClassName('CodeMirror-lines')[0];
+      var atContainer = this.$.atContainer;
+      var codeMirrorCode = atContainer.getElementsByClassName('CodeMirror-lines')[0];
       this.toggleClass('error', !isValid, codeMirrorCode);
-      var hintContainer = this.$.hintContainer;
-      this.toggleClass('error', !isValid, hintContainer);
+      var hint = this.$.hint;
+      this.toggleClass('error', !isValid, hint);
     },
     _isObject: function (obj) {
       return Object.prototype.toString.call(obj) === "[object Object]";
