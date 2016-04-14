@@ -17,8 +17,12 @@
       @apply(--at-form-host);
     }
 
-    #hint {
-      min-height: 14px;
+    /*
+     * this is a 22px height hack to make vertical spacing equal to other at form elements
+     */
+    #hack22px {
+      position: relative;
+      height: 22px;
     }
 
   </style>
@@ -28,6 +32,7 @@
         <code-mirror id="codeMirror" max-lines={{maxLines}}></code-mirror>
       </div>
       <div id="hint"></div>
+      <div id="hack22px"></div>
     </div>
   </template>
 </dom-module>
@@ -157,6 +162,9 @@
       if (this._isReady) {
         this.validate();
       }
+    },
+    _getFocusableElement: function () {
+      return this.$.codeMirror;
     },
     ready: function() {
       this._isReady = false;
