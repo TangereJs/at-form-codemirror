@@ -17,12 +17,9 @@
       @apply(--at-form-host);
     }
 
-    /*
-     * this is a 22px height hack to make vertical spacing equal to other at form elements
-     */
-    #hack22px {
-      position: relative;
-      height: 22px;
+    #hint {
+      min-height: 14px;
+      margin-bottom: 8px;
     }
 
   </style>
@@ -32,7 +29,6 @@
         <code-mirror id="codeMirror" max-lines={{maxLines}}></code-mirror>
       </div>
       <div id="hint"></div>
-      <div id="hack22px"></div>
     </div>
   </template>
 </dom-module>
