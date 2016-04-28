@@ -31,9 +31,10 @@
 
       test('is hint displayed', function() {
         var codemirror = fixture('isHintDisplayed');
-        MockInteractions.focus(codemirror);
 
-        assert.equal(codemirror.$.hint.innerHTML, "This is demo hint", 'codemirror.hint text is correct');
+        assert.equal(codemirror.hint, "This is demo hint", 'codemirror.hint property is not set');
+        codemirror.focus();
+        assert.equal(codemirror.$.hint.innerHTML, "This is demo hint", 'codemirror.hint text is incorrect');
       });
 
     });
