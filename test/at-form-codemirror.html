@@ -29,12 +29,15 @@
 
     suite('basic', function() {
 
-      test('is hint displayed', function() {
+      test('is hint displayed', function(done) {
         var codemirror = fixture('isHintDisplayed');
 
         assert.equal(codemirror.hint, "This is demo hint", 'codemirror.hint property is not set');
         codemirror.focus();
-        assert.equal(codemirror.$.hint.innerHTML, "This is demo hint", 'codemirror.hint text is incorrect');
+        flush(function () {
+          assert.equal(codemirror.$.hint.innerHTML, "This is demo hint", 'codemirror.hint text is incorrect');
+          done();
+        });
       });
 
     });
