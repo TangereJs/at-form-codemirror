@@ -2,8 +2,9 @@
 <link rel="import" href="../at-theme/at-theme.html">
 <link rel="import" href="../at-i18n/at-i18n-behavior.html">
 <link rel="import" href="../code-mirror/code-mirror.html">
-<link rel="import" href="../at-form-behaviors/at-form-behaviors.html">
 <link rel="import" href="../iron-label/iron-label.html">
+<link rel="import" href="../at-form-behaviors/at-form-behaviors.html">
+<link rel="import" href="at-form-codemirror-input-validation.html">
 
 <dom-module id="at-form-codemirror">
   <template>
@@ -35,7 +36,7 @@
 <script>
   Polymer({
     is: 'at-form-codemirror',
-    behaviors: [Tangere.behaviors.i18n, Tangere.behaviors.formUIGeneric],
+    behaviors: [Tangere.behaviors.i18n, Tangere.behaviors.formUIGeneric, Tangere.behaviors.AtFormCodeMirrorInputValidation ],
     properties: {
       /**
        * Element's label for element display purposes
@@ -219,24 +220,18 @@
       type: "object",
       xtype: "json"
     }],
-    _errorMessageTemplates: {
-      maxCharsHint: "You can not enter more than {maxChars} characters."
-    },
-    _cmInstance: undefined,
 
     _hideLabelChanged: function(newValue, oldValue) {
       this.toggleClass("hidden", newValue, this.$.label);
     },
 
     ready: function() {
-      this._isReady = false;
       var cmInstance = this._cmInstance = this.$.codeMirror;
       var self = this;
       cmInstance.addEventListener('value-changed', function() {
-        self.value = this.value;
+        self.validate();
       });
-
-      this._isReady = true;
+      cmInstance.disabled = this.disabled;
 
       if (!this.value) {
         // copy content from innerHtml/childNodes if no value was provided
@@ -248,9 +243,7 @@
         this.value = tc;
       }
 
-      this._validationFunctions.push(this._validateMaxChars.bind(this));
-
-      this._disabledChanged(this.disabled, this.disabled);
+      this._isReady = true;
     },
 
     attached: function() {
@@ -258,14 +251,13 @@
     },
 
     _disabledChanged: function(newValue, oldValue) {
+      var label = this.$.label;
+      this.toggleClass('disabled', newValue, label);
+      var contentContainer = this.$.contentContainer;
+      this.toggleClass('disabled', newValue, contentContainer);
+
       if (this._isReady) {
         this._cmInstance.disabled = this.disabled;
-
-        var label = this.$.label;
-        this.toggleClass('disabled', newValue, label);
-        var contentContainer = this.$.contentContainer;
-        this.toggleClass('disabled', newValue, contentContainer);
-
         this.validate();
       }
     },
@@ -273,10 +265,12 @@
     _hideChanged: function(newValue, oldValue) {
       var atContainer = this.$.atContainer;
       this.toggleClass('hidden', newValue, atContainer);
+
       if (!newValue) {
         this.refresh();
         this.$.codeMirror.maxLinesChanged(this.maxLines, this.maxLines);
       }
+
       if (this._isReady) {
         this.validate();
       }
@@ -295,16 +289,18 @@
     },
 
     _valueChanged: function(newValue, oldValue) {
+      // *ij* [object SpeechRecognition]
+      // well at-core-mic recognition property is of that type and it needs to be strigified so there you have it
+      if (this._isObject(newValue) || this._isArray(newValue) || this._isSpeechRecognition(newValue)) {
+        newValue = JSON.stringify(newValue, null, ' ');
+        this.value = newValue;
+        return;
+      }
+
       if (this._isReady) {
-        // *ij* [object SpeechRecognition]
-        // well at-core-mic recognition property is of that type and it needs to be strigified so there you have it
-        if (this._isObject(newValue) || this._isArray(newValue) || this._isSpeechRecognition(newValue)) {
-          newValue = JSON.stringify(newValue, null, ' ');
-          this.value = newValue;
-          return;
-        }
         this._cmInstance.value = String(this.value);
-        this.validate();
+
+        this._fireValueChangedEvent(this.value);
       }
     },
 
@@ -313,8 +309,23 @@
     },
 
     validate: function () {
+      // validate must validate the current value
+      var inputValue = this.$.codeMirror.value;
 
-      return true;
+      if ((this.value === null && inputValue !== "") || (this.value !== null && this.value !== inputValue)) {
+        this.value = inputValue;
+      }
+
+      var validationResult = this._validateBaseData();
+      this._handleValidationResult(validationResult);
+      if (validationResult.isFinal) {
+        return validationResult.isValid;
+      }
+
+      validationResult = this._validateData(this, this.value, this.T.bind(this));
+      this._handleValidationResult(validationResult);
+
+      return validationResult.isValid;
     },
 
     _updateUIValidState: function(isValid) {
@@ -327,24 +338,6 @@
       this.toggleClass('error', !isValid, codeMirrorCode);
       var hint = this.$.hint;
       this.toggleClass('error', !isValid, hint);
-    },
-
-    _validateMaxChars: function(value) {
-      var valid = true;
-
-      try {
-        var maxChars = parseInt(this.maxChars);
-        if (maxChars > 0) {
-          var charCount = value.length;
-          valid = (maxChars + 1) > charCount;
-
-          this._errorMessage = this._errorMessageTemplates.maxCharsHint.replace("{maxChars}", this.maxChars);
-        }
-      } catch (e) {
-        console.log(e);
-      }
-
-      return valid;
     },
 
     refresh: function() {
