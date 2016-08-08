@@ -2,7 +2,7 @@
 <link rel="import" href="../at-theme/at-theme.html">
 <link rel="import" href="../at-i18n/at-i18n-behavior.html">
 <link rel="import" href="../code-mirror/code-mirror.html">
-<link rel="import" href="../at-form-behaviors/at-form-behaviors-validation.html">
+<link rel="import" href="../at-form-behaviors/at-form-behaviors.html">
 <link rel="import" href="../iron-label/iron-label.html">
 
 <dom-module id="at-form-codemirror">
@@ -35,33 +35,134 @@
 <script>
   Polymer({
     is: 'at-form-codemirror',
-    behaviors: [Tangere.behaviors.i18n, Tangere.behaviors.formValidation],
+    behaviors: [Tangere.behaviors.i18n, Tangere.behaviors.formUIGeneric],
     properties: {
-      value: {
+      /**
+       * Element's label for element display purposes
+       * @property label
+       * @type String
+       * @default ''
+       */
+      label: {
         type: String,
         value: '',
-        notify: true,
-        observer: 'valueChanged',
-        xtype: "textarea",
-        title: 'Value'
+        title: 'Label'
       },
+
+      /**
+       * Hides element's label
+       * @property hideLabel
+       * @type Boolean
+       * @default false
+       */
       hideLabel: {
         type: Boolean,
         value: false,
-        observer: 'hideLabelChanged',
+        observer: '_hideLabelChanged',
         title: 'Do not show the label'
       },
+
+      /**
+       * Element's disabled state
+       * @property disabled
+       * @type Boolean
+       * @default false
+       */
+      disabled: {
+        type: Boolean,
+        value: false,
+        observer: '_disabledChanged',
+        title: 'Field value can not be changed'
+      },
+
+      /**
+      * Hides the element. When hidden nothing is displayed for the element
+      * @property hide
+      * @type Boolean
+      * @default false
+      */
+      hide: {
+        type: Boolean,
+        value: false,
+        observer: '_hideChanged',
+        title: 'Field is invisible'
+      },
+
+      /**
+       * Element's required state for element validation purposes
+       * @property required
+       * @type Boolean
+       * @default false
+       */
+      required: {
+        type: Boolean,
+        value: false,
+        observer: '_requiredChanged',
+        title: 'Input required'
+      },
+
+      /**
+       * Maximum number of characters across all lines allowed on the element. Use 0 (zero) for no limit
+       * @property maxLines
+       * @type Number
+       * @default 0
+       */
+      maxChars: {
+        type: Number,
+        value: 0,
+        observer: '_maxCharsChanged',
+        title: 'Maximum number of characters'
+      },
+
+      /**
+       * Elements value
+       * @property value
+       * @type String
+       * @default ''
+       */
+      value: {
+        type: String,
+        value: '',
+        observer: '_valueChanged',
+        xtype: "textarea",
+        title: 'Value'
+      },
+
+      /**
+       * Maximum number of lines allowed on the element before vertical scroll bar is used
+       * @property maxLines
+       * @type Number
+       * @default 14
+       */
+      maxLines: {
+        type: Number,
+        value: 14
+      },
+
+      /**
+       * Syntax highlighting mode
+       * @property mode
+       * @type String
+       * @default ''
+       */
       mode: {
         type: String,
         value: 'htmlmixed',
-        observer: 'modeChanged',
+        observer: '_modeChanged',
         xtype: "enum",
         enum: ["htmlmixed", "javascript", "css", "markdown", "sql", "xml", "liquid"]
       },
+
+      /**
+       * Color theme
+       * @property theme
+       * @type String
+       * @default 'carbon'
+       */
       theme: {
         type: String,
         value: 'carbon',
-        observer: 'themeChanged',
+        observer: '_themeChanged',
         xtype: 'enum',
         xvaluelist: [
           { title: "Ambiance", value: "ambiance"},
@@ -84,55 +185,29 @@
           { title: "XQ Light", value: "xq-light"}
         ]
       },
+
+      /**
+       * Tab size
+       * @property tabSize
+       * @type Number
+       * @default 2
+       */
       tabSize: {
         type: Number,
         value: 2,
-        observer: 'tabSizeChanged'
+        observer: '_tabSizeChanged'
       },
-      noLineNumbers: {
-        type: Boolean,
-        value: false,
-        observer: 'noLineNumbersChanged'
-      },
-      required: {
-        type: Boolean,
-        value: false,
-        observer: 'requiredChanged',
-        title: 'Input required'
-      },
-      disabled: {
-        type: Boolean,
-        value: false,
-        observer: 'disabledChanged',
-        title: 'Field value can not be changed'
-      },
-      label: {
-        type: String,
-        value: '',
-        title: 'Label'
-      },
+
       /**
-       * Hides the element. When hidden nothing is displayed for the element
-       * @property hide
+       * No line numbers. Set to true to hide line numbers
+       * @property noLineNumbers
        * @type Boolean
        * @default false
        */
-      hide: {
+      noLineNumbers: {
         type: Boolean,
         value: false,
-        observer: 'hideChanged',
-        title: 'Field is invisible'
-      },
-      maxLines: {
-        type: Number,
-        value: 14,
-        observer: 'maxLinesChanged'
-      },
-      maxChars: {
-        type: Number,
-        value: 0,
-        observer: 'maxCharsChanged',
-        title: 'Maximum number of characters'
+        observer: '_noLineNumbersChanged'
       }
     },
     $meta: [{
@@ -148,20 +223,11 @@
       maxCharsHint: "You can not enter more than {maxChars} characters."
     },
     _cmInstance: undefined,
-    hideChanged: function(newValue, oldValue) {
-      var atContainer = this.$.atContainer;
-      this.toggleClass('hidden', newValue, atContainer);
-      if (!newValue) {
-        this.refresh();
-        this.$.codeMirror.maxLinesChanged(this.maxLines, this.maxLines);
-      }
-      if (this._isReady) {
-        this.validate();
-      }
+
+    _hideLabelChanged: function(newValue, oldValue) {
+      this.toggleClass("hidden", newValue, this.$.label);
     },
-    _getFocusableElement: function() {
-      return this.$.codeMirror;
-    },
+
     ready: function() {
       this._isReady = false;
       var cmInstance = this._cmInstance = this.$.codeMirror;
@@ -184,25 +250,51 @@
 
       this._validationFunctions.push(this._validateMaxChars.bind(this));
 
-      this.disabledChanged(this.disabled, this.disabled);
+      this._disabledChanged(this.disabled, this.disabled);
     },
-    hideLabelChanged: function(newValue, oldValue) {
-      this.toggleClass("hidden", newValue, this.$.label);
-    },
+
     attached: function() {
       this._cmInstance.value = String(this.value);
     },
-    refresh: function() {
+
+    _disabledChanged: function(newValue, oldValue) {
       if (this._isReady) {
-        this._cmInstance.refresh();
+        this._cmInstance.disabled = this.disabled;
+
+        var label = this.$.label;
+        this.toggleClass('disabled', newValue, label);
+        var contentContainer = this.$.contentContainer;
+        this.toggleClass('disabled', newValue, contentContainer);
+
+        this.validate();
       }
     },
-    focus: function() {
+
+    _hideChanged: function(newValue, oldValue) {
+      var atContainer = this.$.atContainer;
+      this.toggleClass('hidden', newValue, atContainer);
+      if (!newValue) {
+        this.refresh();
+        this.$.codeMirror.maxLinesChanged(this.maxLines, this.maxLines);
+      }
       if (this._isReady) {
-        this._cmInstance.focus();
+        this.validate();
       }
     },
-    valueChanged: function(newValue, oldValue) {
+
+    _requiredChanged: function(oldValue, newValue) {
+      if (this._isReady) {
+        this.validate();
+      }
+    },
+
+    _maxCharsChanged: function(newValue, oldValue) {
+      if (this._isReady) {
+        this.validate();
+      }
+    },
+
+    _valueChanged: function(newValue, oldValue) {
       if (this._isReady) {
         // *ij* [object SpeechRecognition]
         // well at-core-mic recognition property is of that type and it needs to be strigified so there you have it
@@ -215,51 +307,28 @@
         this.validate();
       }
     },
-    modeChanged: function() {
-      if (this._isReady) {
-        this._cmInstance.mode = this.mode;
-      }
-    },
-    themeChanged: function() {
-      if (this._isReady) {
-        this._cmInstance.theme = this.theme;
-      }
-    },
-    tabSizeChanged: function() {
-      if (this._isReady) {
-        this._cmInstance.tabSize = this.tabSize;
-      }
-    },
-    noLineNumbersChanged: function() {
-      if (this._isReady) {
-        this._cmInstance.noLineNumbers = this.noLineNumbers;
-      }
-    },
-    disabledChanged: function(newValue, oldValue) {
-      if (this._isReady) {
-        this._cmInstance.disabled = this.disabled;
 
-        var label = this.$.label;
-        this.toggleClass('disabled', newValue, label);
-        var contentContainer = this.$.contentContainer;
-        this.toggleClass('disabled', newValue, contentContainer);
+    _getFocusableElement: function() {
+      return this.$.codeMirror;
+    },
 
-        this.validate();
-      }
+    validate: function () {
+
+      return true;
     },
-    requiredChanged: function(oldValue, newValue) {
-      if (this._isReady) {
-        this.validate();
-      }
+
+    _updateUIValidState: function(isValid) {
+      var label = this.$.label;
+      this.toggleClass('error', !isValid, label);
+      var contentContainer = this.$.contentContainer;
+      this.toggleClass('error', !isValid, contentContainer);
+      var atContainer = this.$.atContainer;
+      var codeMirrorCode = atContainer.getElementsByClassName('CodeMirror-lines')[0];
+      this.toggleClass('error', !isValid, codeMirrorCode);
+      var hint = this.$.hint;
+      this.toggleClass('error', !isValid, hint);
     },
-    maxLinesChanged: function(newValue, oldValue) {
-      if (this._isReady) {}
-    },
-    maxCharsChanged: function(newValue, oldValue) {
-      if (this._isReady) {
-        this.validate();
-      }
-    },
+
     _validateMaxChars: function(value) {
       var valid = true;
 
@@ -277,17 +346,43 @@
 
       return valid;
     },
-    _updateUIValidState: function(isValid) {
-      var label = this.$.label;
-      this.toggleClass('error', !isValid, label);
-      var contentContainer = this.$.contentContainer;
-      this.toggleClass('error', !isValid, contentContainer);
-      var atContainer = this.$.atContainer;
-      var codeMirrorCode = atContainer.getElementsByClassName('CodeMirror-lines')[0];
-      this.toggleClass('error', !isValid, codeMirrorCode);
-      var hint = this.$.hint;
-      this.toggleClass('error', !isValid, hint);
+
+    refresh: function() {
+      if (this._isReady) {
+        this._cmInstance.refresh();
+      }
     },
+
+    focus: function() {
+      if (this._isReady) {
+        this._cmInstance.focus();
+      }
+    },
+
+    _modeChanged: function() {
+      if (this._isReady) {
+        this._cmInstance.mode = this.mode;
+      }
+    },
+
+    _themeChanged: function() {
+      if (this._isReady) {
+        this._cmInstance.theme = this.theme;
+      }
+    },
+
+    _tabSizeChanged: function() {
+      if (this._isReady) {
+        this._cmInstance.tabSize = this.tabSize;
+      }
+    },
+
+    _noLineNumbersChanged: function() {
+      if (this._isReady) {
+        this._cmInstance.noLineNumbers = this.noLineNumbers;
+      }
+    },
+
     _isObject: function(obj) {
       return Object.prototype.toString.call(obj) === "[object Object]";
     },
