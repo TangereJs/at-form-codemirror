@@ -228,7 +228,13 @@
     ready: function() {
       var cmInstance = this._cmInstance = this.$.codeMirror;
       var self = this;
-      cmInstance.addEventListener('value-changed', function() {
+      cmInstance.addEventListener('value-changed', function(event) {
+        // *ij* 09.08.2016
+        // polymer-js lies about value-changed event not bubbling when bubbles = false under shadowDOM
+        // underlying code-mirror value-changed event is non-bubbling but it bleeds into test code anyway
+        // after reading this https://github.com/Polymer/polymer/issues/3226 it turns out this is correct shadowDOM behavior
+        // event.stopPropagation() must be called so that correct behavior is produced        
+        event.stopPropagation();
         self.validate();
       });
       cmInstance.disabled = this.disabled;
@@ -298,7 +304,11 @@
       }
 
       if (this._isReady) {
-        this._cmInstance.value = String(this.value);
+        if (newValue === null) {
+          this._cmInstance.value = "";
+        } else {
+          this._cmInstance.value = String(this.value);
+        }
 
         this._fireValueChangedEvent(this.value);
       }
