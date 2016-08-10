@@ -54,7 +54,12 @@
           activeElement = input.shadowRoot.activeElement;
           assert.equal('CODE-MIRROR', activeElement.nodeName, 'Input element has lost focus');
         } else {
-          assert.equal('TEXTAREA', activeElement.nodeName, 'Input element has lost focus');
+          // ['DIV', 'TEXTAREA'].indexOf(activeElement.nodeName) > -1
+          // why is this needed in 2016?
+          // because of lol w00t!? moment on iPad/iPhone Safari vs Desktop Safari
+          // desktop safari detects active element as TEXTAREA (Chrome, FF, IE11 do this as well)
+          // but iPad/iPhone Safari detects DIV as active element; come on iPad Safari ... IE11 does this right ...
+          assert.equal(true, ['DIV', 'TEXTAREA'].indexOf(activeElement.nodeName) > -1, 'Input element has lost focus');
         }
 
         input.value = "lorem ipsum";
@@ -70,7 +75,7 @@
         if (getDomMode(input) === 'shadowDOM') {
           assert.equal('CODE-MIRROR', activeElement.nodeName, 'Input element has lost focus');
         } else {
-          assert.equal('TEXTAREA', activeElement.nodeName, 'Input element has lost focus');
+          assert.equal(true, ['DIV', 'TEXTAREA'].indexOf(activeElement.nodeName) > -1, 'Input element has lost focus');
         }
       });
 
@@ -87,7 +92,7 @@
           activeElement = input.shadowRoot.activeElement;
           assert.equal('CODE-MIRROR', activeElement.nodeName, 'Input element has lost focus');
         } else {
-          assert.equal('TEXTAREA', activeElement.nodeName, 'Input element has lost focus');
+          assert.equal(true, ['DIV', 'TEXTAREA'].indexOf(activeElement.nodeName) > -1, 'Input element has lost focus');
         }
 
         inputElement.value = "lorem ipsum";
@@ -103,7 +108,7 @@
         if (getDomMode(input) === 'shadowDOM') {
           assert.equal('CODE-MIRROR', activeElement.nodeName, 'Input element has lost focus');
         } else {
-          assert.equal('TEXTAREA', activeElement.nodeName, 'Input element has lost focus');
+          assert.equal(true, ['DIV', 'TEXTAREA'].indexOf(activeElement.nodeName) > -1, 'Input element has lost focus');
         }
       });
 
