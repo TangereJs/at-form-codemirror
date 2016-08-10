@@ -233,7 +233,7 @@
         // polymer-js lies about value-changed event not bubbling when bubbles = false under shadowDOM
         // underlying code-mirror value-changed event is non-bubbling but it bleeds into test code anyway
         // after reading this https://github.com/Polymer/polymer/issues/3226 it turns out this is correct shadowDOM behavior
-        // event.stopPropagation() must be called so that correct behavior is produced        
+        // event.stopPropagation() must be called so that correct behavior is produced
         event.stopPropagation();
         self.validate();
       });
@@ -318,7 +318,10 @@
       return this.$.codeMirror;
     },
 
-    validate: function () {
+    validate: function (showError) {
+
+      if (showError === undefined) { showError = this.autovalidate; }
+
       // validate must validate the current value
       var inputValue = this.$.codeMirror.value;
 
@@ -327,13 +330,13 @@
       }
 
       var validationResult = this._validateBaseData();
-      this._handleValidationResult(validationResult);
+      if (showError) { this._handleValidationResult(validationResult); }
       if (validationResult.isFinal) {
         return validationResult.isValid;
       }
 
       validationResult = this._validateData(this, this.value, this.T.bind(this));
-      this._handleValidationResult(validationResult);
+      if (showError) { this._handleValidationResult(validationResult); }
 
       return validationResult.isValid;
     },
