@@ -98,7 +98,6 @@
       required: {
         type: Boolean,
         value: false,
-        observer: '_requiredChanged',
         title: 'Input required'
       },
 
@@ -111,7 +110,6 @@
       maxChars: {
         type: Number,
         value: 0,
-        observer: '_maxCharsChanged',
         title: 'Maximum number of characters'
       },
 
@@ -211,6 +209,11 @@
         observer: '_noLineNumbersChanged'
       }
     },
+
+    observers: [
+      '_internalValidStateUpdate(disabled, required, maxChars)'
+    ],
+
     $meta: [{
       title: "Code",
       type: "string",
@@ -235,7 +238,7 @@
         // after reading this https://github.com/Polymer/polymer/issues/3226 it turns out this is correct shadowDOM behavior
         // event.stopPropagation() must be called so that correct behavior is produced
         event.stopPropagation();
-        self.validate();
+        self.validate(true);
       });
       cmInstance.disabled = this.disabled;
 
@@ -250,6 +253,8 @@
       }
 
       this._isReady = true;
+      this._valueChanged(this.value, "called from ready");
+      this._internalValidStateUpdate(this.disabled, this.required, this.maxChars);
     },
 
     attached: function() {
@@ -264,7 +269,6 @@
 
       if (this._isReady) {
         this._cmInstance.disabled = this.disabled;
-        this.validate();
       }
     },
 
@@ -276,21 +280,11 @@
         this.refresh();
         this.$.codeMirror.maxLinesChanged(this.maxLines, this.maxLines);
       }
-
-      if (this._isReady) {
-        this.validate();
-      }
     },
 
-    _requiredChanged: function(oldValue, newValue) {
+    _internalValidStateUpdate: function (disabled, required, maxChars) {
       if (this._isReady) {
-        this.validate();
-      }
-    },
-
-    _maxCharsChanged: function(newValue, oldValue) {
-      if (this._isReady) {
-        this.validate();
+        this.validate(true);
       }
     },
 
