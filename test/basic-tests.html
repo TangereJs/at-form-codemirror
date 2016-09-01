@@ -358,7 +358,13 @@
           var codemirror = fixture('isHintDisplayed');
 
           assert.equal(codemirror.hint, "This is demo hint", 'codemirror.hint property is not set');
-          codemirror.focus();
+
+          // this works only when tab that executes tests has focus
+          // codemirror.focus();
+
+          // this works when tab that executes tests doens't have focus
+          var focusable = codemirror._getFocusableElement();
+          MockInteractions.focus(focusable);
 
           flush(function() {
             assert.equal(codemirror.$.hint.innerHTML, "This is demo hint", 'codemirror.hint text is incorrect');
@@ -581,7 +587,13 @@
           element.hint = "lorem ipsum";
 
           assert.equal("lorem ipsum", element.hint, 'hint property is not set correctly');
-          element.focus();
+
+          // this works only when tab that executes tests has focus
+          // codemirror.focus();
+
+          // this works when tab that executes tests doens't have focus
+          var focusable = element._getFocusableElement();
+          MockInteractions.focus(focusable);
 
           flush(function() {
             assert.equal(element.$.hint.innerHTML, "lorem ipsum", 'codemirror.hint text is incorrect');
