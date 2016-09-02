@@ -238,7 +238,7 @@
         // after reading this https://github.com/Polymer/polymer/issues/3226 it turns out this is correct shadowDOM behavior
         // event.stopPropagation() must be called so that correct behavior is produced
         event.stopPropagation();
-        self.validate(true);
+        self.validate();
       });
       cmInstance.disabled = this.disabled;
 
@@ -284,7 +284,7 @@
 
     _internalValidStateUpdate: function (disabled, required, maxChars) {
       if (this._isReady) {
-        this.validate(true);
+        this.validate();
       }
     },
 
