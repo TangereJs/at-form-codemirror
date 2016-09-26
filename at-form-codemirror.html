@@ -149,7 +149,16 @@
         value: 'htmlmixed',
         observer: '_modeChanged',
         xtype: "enum",
-        enum: ["htmlmixed", "javascript", "css", "markdown", "sql", "xml", "liquid"]
+        xvaluelist: [{
+          title: "htmlmixed", value: "htmlmixed" }, {
+          title: "javascript", value: "javascript" }, {
+          title: "css", value: "css" }, {
+          title: "markdown", value: "markdown" }, {
+          title: "sql", value: "sql" }, {
+          title: "xml", value: "xml" }, {
+          title: "liquid", value: "liquid" }, {
+          title: "json", value: "application/json"
+        }]
       },
 
       /**
