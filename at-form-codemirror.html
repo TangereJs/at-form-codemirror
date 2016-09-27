@@ -220,7 +220,7 @@
     },
 
     observers: [
-      '_internalValidStateUpdate(disabled, required, maxChars)'
+      '_internalValidStateUpdate(required, maxChars)'
     ],
 
     $meta: [{
@@ -263,7 +263,7 @@
 
       this._isReady = true;
       this._valueChanged(this.value, "called from ready");
-      this._internalValidStateUpdate(this.disabled, this.required, this.maxChars);
+      this._internalValidStateUpdate(this.required, this.maxChars);
     },
 
     attached: function() {
@@ -291,7 +291,7 @@
       }
     },
 
-    _internalValidStateUpdate: function (disabled, required, maxChars) {
+    _internalValidStateUpdate: function (required, maxChars) {
       if (this._isReady) {
         this.validate();
       }
@@ -334,7 +334,7 @@
 
       var validationResult = this._validateBaseData();
       if (showError) { this._handleValidationResult(validationResult); }
-      if (validationResult.isFinal) {
+      if (!validationResult.isValid) {
         return validationResult.isValid;
       }
 

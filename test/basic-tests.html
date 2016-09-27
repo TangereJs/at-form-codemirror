@@ -161,197 +161,197 @@
 
         test('is label displayed', function() {
           var element = fixture('isLabelDisplayed');
-          assert.equal('lorem ipsum', element.label, "element's label not set correctly");
+          assert.equal(element.label, 'lorem ipsum', "element's label not set correctly");
           var label = element.$.label;
-          assert.notEqual(null, label, "element's label doesn't exist");
+          assert.notEqual(label, null, "element's label doesn't exist");
           var displayValue = label.getComputedStyleValue('display');
-          assert.equal('block', displayValue, "element's label is not visible");
-          assert.equal('lorem ipsum', Polymer.dom(label).innerHTML, "element's label value not set correctly");
+          assert.equal(displayValue, 'block', "element's label is not visible");
+          assert.equal(Polymer.dom(label).innerHTML, 'lorem ipsum', "element's label value not set correctly");
         });
 
         test('is label hidden, hide label attribute present', function() {
           var element = fixture('isLabelHidden');
-          assert.equal('lorem ipsum', element.label, "element's label not set correctly");
-          assert.equal(true, element.hideLabel, "hideLabel has incorrect value");
+          assert.equal(element.label, 'lorem ipsum', "element's label not set correctly");
+          assert.equal(element.hideLabel, true, "hideLabel has incorrect value");
 
           var label = element.$.label;
-          assert.notEqual(null, label, "element's label doesn't exist");
+          assert.notEqual(label, null, "element's label doesn't exist");
           var displayValue = label.getComputedStyleValue('display');
-          assert.equal('none', displayValue, "element's label is not visible");
-          assert.equal('lorem ipsum', Polymer.dom(label).innerHTML, "element's label value not set correctly");
+          assert.equal(displayValue, 'none', "element's label is not visible");
+          assert.equal(Polymer.dom(label).innerHTML, 'lorem ipsum', "element's label value not set correctly");
         });
 
         test('is label hidden hide-label=false', function() {
           var element = fixture('isLabelHiddenV2');
-          assert.equal('lorem ipsum', element.label, "element's label not set correctly");
-          assert.equal(true, element.hideLabel, "hideLabel has incorrect value");
+          assert.equal(element.label, 'lorem ipsum', "element's label not set correctly");
+          assert.equal(element.hideLabel, true, "hideLabel has incorrect value");
 
           var label = element.$.label;
-          assert.notEqual(null, label, "element's label doesn't exist");
+          assert.notEqual(label, null, "element's label doesn't exist");
           var displayValue = label.getComputedStyleValue('display');
-          assert.equal('none', displayValue, "element's label is not visible");
-          assert.equal('lorem ipsum', Polymer.dom(label).innerHTML, "element's label value not set correctly");
+          assert.equal(displayValue, 'none', "element's label is not visible");
+          assert.equal(Polymer.dom(label).innerHTML, 'lorem ipsum', "element's label value not set correctly");
         });
 
         test('is label hidden hide-label="false"', function() {
           var element = fixture('isLabelHiddenV3');
-          assert.equal('lorem ipsum', element.label, "element's label not set correctly");
-          assert.equal(true, element.hideLabel, "hideLabel has incorrect value");
+          assert.equal(element.label, 'lorem ipsum', "element's label not set correctly");
+          assert.equal(element.hideLabel, true, "hideLabel has incorrect value");
 
           var label = element.$.label;
-          assert.notEqual(null, label, "element's label doesn't exist");
+          assert.notEqual(label, null, "element's label doesn't exist");
           var displayValue = label.getComputedStyleValue('display');
-          assert.equal('none', displayValue, "element's label is not visible");
-          assert.equal('lorem ipsum', Polymer.dom(label).innerHTML, "element's label value not set correctly");
+          assert.equal(displayValue, 'none', "element's label is not visible");
+          assert.equal(Polymer.dom(label).innerHTML, 'lorem ipsum', "element's label value not set correctly");
         });
 
         test('is element disabled', function () {
           var element = fixture('isElementDisabled');
-          assert.equal(true, element.disabled, "element is not disabled");
+          assert.equal(element.disabled, true, "element is not disabled");
 
           var label = element.$.label;
-          assert.equal(true, Polymer.dom(label).classList.contains('disabled'), "label doesn't have disabled class");
+          assert.equal(Polymer.dom(label).classList.contains('disabled'), true, "label doesn't have disabled class");
 
           var cc = element.$.contentContainer;
-          assert.equal(true, Polymer.dom(label).classList.contains('disabled'), "contentContainer doesn't have disabled class");
+          assert.equal(Polymer.dom(label).classList.contains('disabled'), true, "contentContainer doesn't have disabled class");
 
         });
 
         test('is element hidden', function () {
           var element = fixture('isElementHidden');
-          assert.equal(true, element.hide, "element is not hidden");
+          assert.equal(element.hide, true, "element is not hidden");
 
           var atContainer = element.$.atContainer;
-          assert.equal(true, Polymer.dom(atContainer).classList.contains('hidden'), "atContainer doesn't have hidden class");
+          assert.equal(Polymer.dom(atContainer).classList.contains('hidden'), true, "atContainer doesn't have hidden class");
         });
 
         test('is element disabled and hidden', function () {
           var element = fixture('isElementDisabledAndHidden');
-          assert.equal(true, element.disabled, "element is not disabled");
-          assert.equal(true, element.hide, "element is not hidden");
+          assert.equal(element.disabled, true, "element is not disabled");
+          assert.equal(element.hide, true, "element is not hidden");
 
           var label = element.$.label;
-          assert.equal(true, Polymer.dom(label).classList.contains('disabled'), "label doesn't have disabled class");
+          assert.equal(Polymer.dom(label).classList.contains('disabled'), true, "label doesn't have disabled class");
 
           var cc = element.$.contentContainer;
-          assert.equal(true, Polymer.dom(label).classList.contains('disabled'), "contentContainer doesn't have disabled class");
+          assert.equal(Polymer.dom(label).classList.contains('disabled'), true, "contentContainer doesn't have disabled class");
 
           var atContainer = element.$.atContainer;
-          assert.equal(true, Polymer.dom(atContainer).classList.contains('hidden'), "atContainer doesn't have hidden class");
+          assert.equal(Polymer.dom(atContainer).classList.contains('hidden'), true, "atContainer doesn't have hidden class");
         });
 
         test('is element valid', function () {
           var element = fixture('isElementValid');
           var result = element.validate();
-          assert.equal(true, result, "element is not valid");
+          assert.equal(result, true, "element is not valid");
         });
 
         test('is element invalid when required', function () {
           var element = fixture('isElementInvalidWhenRequired');
-          assert.equal(true, element.required, "element is not required");
+          assert.equal(element.required, true, "element is not required");
 
           var result = element.validate();
-          assert.equal(false, result, "element is valid");
+          assert.equal(result, false, "element is valid");
         });
 
         test('is element valid when required and disabled', function () {
           var element = fixture('isElementValidWhenRequiredAndDisabled');
-          assert.equal(true, element.required, "element is not required");
-          assert.equal(true, element.disabled, "element is not disabled");
+          assert.equal(element.required, true, "element is not required");
+          assert.equal(element.disabled, true, "element is not disabled");
 
           var result = element.validate();
-          assert.equal(true, result, "element is not valid");
+          assert.equal(result, false, "element is not valid");
         });
 
         test('is element valid when required and hidden', function () {
           var element = fixture('isElementValidWhenRequiredAndHidden');
-          assert.equal(true, element.required, "element is not required");
-          assert.equal(true, element.hide, "element is not hidden");
+          assert.equal(element.required, true, "element is not required");
+          assert.equal(element.hide, true, "element is not hidden");
 
           var result = element.validate();
-          assert.equal(true, result, "element is not valid");
+          assert.equal(result, false, "element is not valid");
         });
 
         test('is element valid when required, disabled and hidden', function () {
           var element = fixture('isElementValidWhenRequiredDisabledAndHidden');
-          assert.equal(true, element.required, "element is not required");
-          assert.equal(true, element.hide, "element is not hidden");
-          assert.equal(true, element.disabled, "element is not disabled");
+          assert.equal(element.required, true, "element is not required");
+          assert.equal(element.hide, true, "element is not hidden");
+          assert.equal(element.disabled, true, "element is not disabled");
 
           var result = element.validate();
-          assert.equal(true, result, "element is not valid");
+          assert.equal(result, false, "element is not valid");
         });
 
         test('is element invalid when error message is set', function () {
           var element = fixture('isElementInvalidWhenErrorMessage');
-          assert.equal('lorem ipsum', element.errorMessage, "error message not set correctly");
+          assert.equal(element.errorMessage, 'lorem ipsum', "error message not set correctly");
 
           var result = element.validate();
-          assert.equal(false, result, "element is valid");
+          assert.equal(result, false, "element is valid");
         });
 
         test('is element valid when error message is set and disabled', function () {
           var element = fixture('isElementValidWhenErrorMessageAndDisabled');
-          assert.equal('lorem ipsum', element.errorMessage, "error message not set correctly");
-          assert.equal(true, element.disabled, "element is not disabled");
+          assert.equal(element.errorMessage, 'lorem ipsum', "error message not set correctly");
+          assert.equal(element.disabled, true, "element is not disabled");
 
           var result = element.validate();
-          assert.equal(true, result, "element is invalid");
+          assert.equal(result, false, "element is invalid");
         });
 
         test('is element valid when error message is set and hidden', function () {
           var element = fixture('isElementValidWhenErrorMessageAndHidden');
-          assert.equal('lorem ipsum', element.errorMessage, "error message not set correctly");
-          assert.equal(true, element.hide, "element is not hidden");
+          assert.equal(element.errorMessage, 'lorem ipsum', "error message not set correctly");
+          assert.equal(element.hide, true, "element is not hidden");
 
           var result = element.validate();
-          assert.equal(true, result, "element is invalid");
+          assert.equal(result, false, "element is invalid");
         });
 
         test('is element valid when error message is set and disabled and hidden', function () {
           var element = fixture('isElementValidWhenErrorMessageDisabledAndHidden');
-          assert.equal('lorem ipsum', element.errorMessage, "error message not set correctly");
-          assert.equal(true, element.disabled, "element is not disabled");
-          assert.equal(true, element.hide, "element is not hidden");
+          assert.equal(element.errorMessage, 'lorem ipsum', "error message not set correctly");
+          assert.equal(element.disabled, true, "element is not disabled");
+          assert.equal(element.hide, true, "element is not hidden");
 
           var result = element.validate();
-          assert.equal(true, result, "element is invalid");
+          assert.equal(result, false, "element is invalid");
         });
 
         test('max chars 0, value empty string', function () {
           var element = fixture('maxChars0EmptyValue');
-          assert.equal(0, element.maxChars, "maxChars not set correctly");
-          assert.equal("", element.value, "value not set correctly");
+          assert.equal(element.maxChars, 0, "maxChars not set correctly");
+          assert.equal(element.value, "", "value not set correctly");
 
           var result = element.validate();
-          assert.equal(true, result, "element is invalid");
+          assert.equal(result, true, "element is invalid");
         });
 
         test('max chars 10, value empty string', function () {
           var element = fixture('maxChars10EmptyValue');
-          assert.equal(10, element.maxChars, "maxChars not set correctly");
-          assert.equal("", element.value, "value not set correctly");
+          assert.equal(element.maxChars, 10, "maxChars not set correctly");
+          assert.equal(element.value, "", "value not set correctly");
 
           var result = element.validate();
-          assert.equal(true, result, "element is invalid");
+          assert.equal(result, true, "element is invalid");
         });
 
         test('max chars 0, value lorem ipsum', function () {
           var element = fixture('maxChars0ValueLoremIpsum');
-          assert.equal(0, element.maxChars, "maxChars not set correctly");
-          assert.equal("lorem ipsum", element.value, "value not set correctly");
+          assert.equal(element.maxChars, 0, "maxChars not set correctly");
+          assert.equal(element.value, "lorem ipsum", "value not set correctly");
 
           var result = element.validate();
-          assert.equal(true, result, "element is invalid");
+          assert.equal(result, true, "element is invalid");
         });
 
         test('max chars 10, value lorem ipsum', function () {
           var element = fixture('maxChars10ValueLoremIpsum');
-          assert.equal(10, element.maxChars, "maxChars not set correctly");
-          assert.equal("lorem ipsum", element.value, "value not set correctly");
+          assert.equal(element.maxChars, 10, "maxChars not set correctly");
+          assert.equal(element.value, "lorem ipsum", "value not set correctly");
 
           var result = element.validate();
-          assert.equal(false, result, "element is valid");
+          assert.equal(result, false, "element is valid");
         });
 
         test('is hint displayed', function(done) {
@@ -382,14 +382,14 @@
         test('is label displayed', function() {
           var element = fixture('propertyTest');
           element.label = 'lorem ipsum';
-          assert.equal(false, element.hideLabel, "hideLabel has incorrect value");
+          assert.equal(element.hideLabel, false, "hideLabel has incorrect value");
 
-          assert.equal('lorem ipsum', element.label, "element's label not set correctly");
+          assert.equal(element.label, 'lorem ipsum', "element's label not set correctly");
           var label = element.$.label;
-          assert.notEqual(null, label, "element's label doesn't exist");
+          assert.notEqual(label, null, "element's label doesn't exist");
           var displayValue = label.getComputedStyleValue('display');
-          assert.equal('block', displayValue, "element's label is not visible");
-          assert.equal('lorem ipsum', Polymer.dom(label).innerHTML, "element's label value not set correctly");
+          assert.equal(displayValue, 'block', "element's label is not visible");
+          assert.equal(Polymer.dom(label).innerHTML, 'lorem ipsum', "element's label value not set correctly");
         });
 
         test('is label hidden', function() {
@@ -397,88 +397,88 @@
           element.label = 'lorem ipsum';
           element.hideLabel = true;
 
-          assert.equal('lorem ipsum', element.label, "element's label not set correctly");
-          assert.equal(true, element.hideLabel, "hideLabel has incorrect value");
+          assert.equal(element.label, 'lorem ipsum', "element's label not set correctly");
+          assert.equal(element.hideLabel, true, "hideLabel has incorrect value");
           var label = element.$.label;
-          assert.notEqual(null, label, "element's label doesn't exist");
+          assert.notEqual(label, null, "element's label doesn't exist");
           var displayValue = label.getComputedStyleValue('display');
-          assert.equal('none', displayValue, "element's label is visible");
-          assert.equal('lorem ipsum', Polymer.dom(label).innerHTML, "element's label value not set correctly");
+          assert.equal(displayValue, 'none', "element's label is visible");
+          assert.equal(Polymer.dom(label).innerHTML, 'lorem ipsum', "element's label value not set correctly");
         });
 
         test('is element disabled', function() {
           var element = fixture('propertyTest');
           element.disabled = true;
-          assert.equal(true, element.disabled, "disabled property has incorrect value");
+          assert.equal(element.disabled, true, "disabled property has incorrect value");
 
           var label = element.$.label;
-          assert.equal(true, Polymer.dom(label).classList.contains('disabled'), "label doesn't have disabled class");
+          assert.equal(Polymer.dom(label).classList.contains('disabled'), true, "label doesn't have disabled class");
 
           var cc = element.$.contentContainer;
-          assert.equal(true, Polymer.dom(label).classList.contains('disabled'), "contentContainer doesn't have disabled class");
+          assert.equal(Polymer.dom(label).classList.contains('disabled'), true, "contentContainer doesn't have disabled class");
         });
 
         test('is element hidden', function () {
           var element = fixture('propertyTest');
           element.hide = true;
-          assert.equal(true, element.hide, "hide property has incorrect value");
+          assert.equal(element.hide, true, "hide property has incorrect value");
 
           var atContainer = element.$.atContainer;
-          assert.equal(true, Polymer.dom(atContainer).classList.contains('hidden'), "atContainer doesn't have hidden class");
+          assert.equal(Polymer.dom(atContainer).classList.contains('hidden'), true, "atContainer doesn't have hidden class");
         });
 
         test('is element disabled and hidden', function () {
           var element = fixture('propertyTest');
           element.disabled = true;
           element.hide = true;
-          assert.equal(true, element.disabled, "disabled property has incorrect value");
-          assert.equal(true, element.hide, "hide property has incorrect value");
+          assert.equal(element.disabled, true, "disabled property has incorrect value");
+          assert.equal(element.hide, true, "hide property has incorrect value");
 
           var label = element.$.label;
-          assert.equal(true, Polymer.dom(label).classList.contains('disabled'), "label doesn't have disabled class");
+          assert.equal(Polymer.dom(label).classList.contains('disabled'), true, "label doesn't have disabled class");
 
           var cc = element.$.contentContainer;
-          assert.equal(true, Polymer.dom(label).classList.contains('disabled'), "contentContainer doesn't have disabled class");
+          assert.equal(Polymer.dom(label).classList.contains('disabled'), true, "contentContainer doesn't have disabled class");
 
           var atContainer = element.$.atContainer;
-          assert.equal(true, Polymer.dom(atContainer).classList.contains('hidden'), "atContainer doesn't have hidden class");
+          assert.equal(Polymer.dom(atContainer).classList.contains('hidden'), true, "atContainer doesn't have hidden class");
         });
 
         test('is element valid', function () {
           var element = fixture('propertyTest');
           var isValid = element.validate();
-          assert.equal(true, isValid, "element is invalid");
+          assert.equal(isValid, true, "element is invalid");
         });
 
         test('is element invalid when required', function () {
           var element = fixture('propertyTest');
           element.required = true;
-          assert.equal(true, element.required, "element is not required");
+          assert.equal(element.required, true, "element is not required");
 
           var result = element.validate();
-          assert.equal(false, result, "element is valid");
+          assert.equal(result, false, "element is valid");
         });
 
         test('is element valid when required and disabled', function () {
           var element = fixture('propertyTest');
           element.required = true;
           element.disabled = true;
-          assert.equal(true, element.required, "element is not required");
-          assert.equal(true, element.disabled, "element is not disabled");
+          assert.equal(element.required, true, "element is not required");
+          assert.equal(element.disabled, true, "element is not disabled");
 
           var result = element.validate();
-          assert.equal(true, result, "element is not valid");
+          assert.equal(result, false, "element is not valid");
         });
 
         test('is element valid when required and hidden', function () {
           var element = fixture('propertyTest');
           element.required = true;
           element.hide = true;
-          assert.equal(true, element.required, "element is not required");
-          assert.equal(true, element.hide, "element is not hidden");
+          assert.equal(element.required, true, "element is not required");
+          assert.equal(element.hide, true, "element is not hidden");
 
           var result = element.validate();
-          assert.equal(true, result, "element is not valid");
+          assert.equal(result, false, "element is not valid");
         });
 
         test('is element valid when required, disabled and hidden', function () {
@@ -486,43 +486,43 @@
           element.required = true;
           element.hide = true;
           element.disabled = true;
-          assert.equal(true, element.required, "element is not required");
-          assert.equal(true, element.hide, "element is not hidden");
-          assert.equal(true, element.disabled, "element is not disabled");
+          assert.equal(element.required, true, "element is not required");
+          assert.equal(element.hide, true, "element is not hidden");
+          assert.equal(element.disabled, true, "element is not disabled");
 
           var result = element.validate();
-          assert.equal(true, result, "element is not valid");
+          assert.equal(result, false, "element is not valid");
         });
 
         test('is element invalid when error message is set', function () {
           var element = fixture('propertyTest');
           element.errorMessage = "lorem ipsum";
-          assert.equal('lorem ipsum', element.errorMessage, "error message not set correctly");
+          assert.equal(element.errorMessage, 'lorem ipsum', "error message not set correctly");
 
           var result = element.validate();
-          assert.equal(false, result, "element is valid");
+          assert.equal(result, false, "element is valid");
         });
 
         test('is element valid when error message is set and disabled', function () {
           var element = fixture('propertyTest');
           element.errorMessage = "lorem ipsum";
           element.disabled = true;
-          assert.equal('lorem ipsum', element.errorMessage, "error message not set correctly");
-          assert.equal(true, element.disabled, "element is not disabled");
+          assert.equal(element.errorMessage, 'lorem ipsum', "error message not set correctly");
+          assert.equal(element.disabled, true, "element is not disabled");
 
           var result = element.validate();
-          assert.equal(true, result, "element is invalid");
+          assert.equal(result, false, "element is invalid");
         });
 
         test('is element valid when error message is set and hidden', function () {
           var element = fixture('propertyTest');
           element.errorMessage = "lorem ipsum";
           element.hide = true;
-          assert.equal('lorem ipsum', element.errorMessage, "error message not set correctly");
-          assert.equal(true, element.hide, "element is not hidden");
+          assert.equal(element.errorMessage, 'lorem ipsum', "error message not set correctly");
+          assert.equal(element.hide, true, "element is not hidden");
 
           var result = element.validate();
-          assert.equal(true, result, "element is invalid");
+          assert.equal(result, false, "element is invalid");
         });
 
         test('is element valid when error message is set and disabled and hidden', function () {
@@ -530,63 +530,63 @@
           element.errorMessage = "lorem ipsum";
           element.disabled = true;
           element.hide = true;
-          assert.equal('lorem ipsum', element.errorMessage, "error message not set correctly");
-          assert.equal(true, element.disabled, "element is not disabled");
-          assert.equal(true, element.hide, "element is not hidden");
+          assert.equal(element.errorMessage, 'lorem ipsum', "error message not set correctly");
+          assert.equal(element.disabled, true, "element is not disabled");
+          assert.equal(element.hide, true, "element is not hidden");
 
           var result = element.validate();
-          assert.equal(true, result, "element is invalid");
+          assert.equal(result, false, "element is invalid");
         });
 
         test('max chars 0, value empty string', function () {
           var element = fixture('propertyTest');
           element.maxChars = 0;
           element.value = "";
-          assert.equal(0, element.maxChars, "maxChars not set correctly");
-          assert.equal("", element.value, "value not set correctly");
+          assert.equal(element.maxChars, 0, "maxChars not set correctly");
+          assert.equal(element.value, "", "value not set correctly");
 
           var result = element.validate();
-          assert.equal(true, result, "element is invalid");
+          assert.equal(result, true, "element is invalid");
         });
 
         test('max chars 10, value empty string', function () {
           var element = fixture('propertyTest');
           element.maxChars = 10;
           element.value = "";
-          assert.equal(10, element.maxChars, "maxChars not set correctly");
-          assert.equal("", element.value, "value not set correctly");
+          assert.equal(element.maxChars, 10, "maxChars not set correctly");
+          assert.equal(element.value, "", "value not set correctly");
 
           var result = element.validate();
-          assert.equal(true, result, "element is invalid");
+          assert.equal(result, true, "element is invalid");
         });
 
         test('max chars 0, value lorem ipsum', function () {
           var element = fixture('propertyTest');
           element.maxChars = 0;
           element.value = "lorem ipsum";
-          assert.equal(0, element.maxChars, "maxChars not set correctly");
-          assert.equal("lorem ipsum", element.value, "value not set correctly");
+          assert.equal(element.maxChars, 0, "maxChars not set correctly");
+          assert.equal(element.value, "lorem ipsum", "value not set correctly");
 
           var result = element.validate();
-          assert.equal(true, result, "element is invalid");
+          assert.equal(result, true, "element is invalid");
         });
 
         test('max chars 10, value lorem ipsum', function () {
           var element = fixture('propertyTest');
           element.maxChars = 10;
           element.value = "lorem ipsum";
-          assert.equal(10, element.maxChars, "maxChars not set correctly");
-          assert.equal("lorem ipsum", element.value, "value not set correctly");
+          assert.equal(element.maxChars, 10, "maxChars not set correctly");
+          assert.equal(element.value, "lorem ipsum", "value not set correctly");
 
           var result = element.validate();
-          assert.equal(false, result, "element is valid");
+          assert.equal(result, false, "element is valid");
         });
 
         test('is hint displayed', function(done) {
           var element = fixture('propertyTest');
           element.hint = "lorem ipsum";
 
-          assert.equal("lorem ipsum", element.hint, 'hint property is not set correctly');
+          assert.equal(element.hint, "lorem ipsum", 'hint property is not set correctly');
 
           // this works only when tab that executes tests has focus
           // codemirror.focus();
