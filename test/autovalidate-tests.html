@@ -50,13 +50,13 @@
           element.value = "";
 
           var isValid = element.validate();
-          assert.equal(false, isValid, "element is valid");
+          assert.equal(isValid, false, "element is valid");
 
           var hint = Polymer.dom(element.$.hint);
           assert.equal(hint.textContent, "", 'Error message not set correctly');
 
           var isValid = element.validate(true);
-          assert.equal(false, isValid, "element is valid");
+          assert.equal(isValid, false, "element is valid");
 
           var hint = Polymer.dom(element.$.hint);
           assert.equal(hint.textContent, element.T('This field is required.'), 'Error message not set correctly');
@@ -69,16 +69,16 @@
           element.value = "";
 
           var isValid = element.validate(true);
-          assert.equal(false, isValid, "element is valid");
+          assert.equal(isValid, false, "element is valid");
 
           var hint = Polymer.dom(element.$.hint);
           assert.equal(hint.textContent, element.T('This field is required.'), 'Error message not set correctly');
 
           var isValid = element.validate(false);
-          assert.equal(false, isValid, "element is valid");
+          assert.equal(isValid, false, "element is valid");
 
           var hint = Polymer.dom(element.$.hint);
-          assert.equal(hint.textContent, element.T('This field is required.'), 'Error message not set correctly');
+          assert.equal(hint.textContent, "", 'Error message not set correctly');
 
         });
 
@@ -88,16 +88,16 @@
           element.value = "";
 
           var isValid = element.validate();
-          assert.equal(false, isValid, "element is valid");
+          assert.equal(isValid, false, "element is valid");
 
           var hint = Polymer.dom(element.$.hint);
           assert.equal(hint.textContent, element.T('This field is required.'), 'Error message not set correctly');
 
           var isValid = element.validate(false);
-          assert.equal(false, isValid, "element is valid");
+          assert.equal(isValid, false, "element is valid");
 
           var hint = Polymer.dom(element.$.hint);
-          assert.equal(hint.textContent, element.T('This field is required.'), 'Error message not set correctly');
+          assert.equal(hint.textContent, "", 'Error message not set correctly');
         });
 
         test('autovalidate, do show errors', function () {
@@ -106,13 +106,13 @@
           element.value = "";
 
           var isValid = element.validate(true);
-          assert.equal(false, isValid, "element is valid");
+          assert.equal(isValid, false, "element is valid");
 
           var hint = Polymer.dom(element.$.hint);
           assert.equal(hint.textContent, element.T('This field is required.'), 'Error message not set correctly');
 
           var isValid = element.validate();
-          assert.equal(false, isValid, "element is valid");
+          assert.equal(isValid, false, "element is valid");
 
           var hint = Polymer.dom(element.$.hint);
           assert.equal(hint.textContent, element.T('This field is required.'), 'Error message not set correctly');
@@ -128,13 +128,13 @@
           element.value = "";
 
           var isValid = element.validate();
-          assert.equal(false, isValid, "element is valid");
+          assert.equal(isValid, false, "element is valid");
 
           var hint = Polymer.dom(element.$.hint);
           assert.equal(hint.textContent, "", 'Error message not set correctly');
 
           var isValid = element.validate(true);
-          assert.equal(false, isValid, "element is valid");
+          assert.equal(isValid, false, "element is valid");
 
           var hint = Polymer.dom(element.$.hint);
           assert.equal(hint.textContent, element.T('This field is required.'), 'Error message not set correctly');
@@ -146,16 +146,16 @@
           element.value = "";
 
           var isValid = element.validate(true);
-          assert.equal(false, isValid, "element is valid");
+          assert.equal(isValid, false, "element is valid");
 
           var hint = Polymer.dom(element.$.hint);
           assert.equal(hint.textContent, element.T('This field is required.'), 'Error message not set correctly');
 
           var isValid = element.validate(false);
-          assert.equal(false, isValid, "element is valid");
+          assert.equal(isValid, false, "element is valid");
 
           var hint = Polymer.dom(element.$.hint);
-          assert.equal(hint.textContent, element.T('This field is required.'), 'Error message not set correctly');
+          assert.equal(hint.textContent, "", 'Error message not set correctly');
         });
 
         test('autovalidate, do not show errors', function () {
@@ -165,16 +165,16 @@
           element.value = "";
 
           var isValid = element.validate();
-          assert.equal(false, isValid, "element is valid");
+          assert.equal(isValid, false, "element is valid");
 
           var hint = Polymer.dom(element.$.hint);
           assert.equal(hint.textContent, element.T('This field is required.'), 'Error message not set correctly');
 
           var isValid = element.validate(false);
-          assert.equal(false, isValid, "element is valid");
+          assert.equal(isValid, false, "element is valid");
 
           var hint = Polymer.dom(element.$.hint);
-          assert.equal(hint.textContent, element.T('This field is required.'), 'Error message not set correctly');
+          assert.equal(hint.textContent, "", 'Error message not set correctly');
         });
 
         test('autovalidate, do show errors', function () {
@@ -184,13 +184,13 @@
           element.value = "";
 
           var isValid = element.validate(true);
-          assert.equal(false, isValid, "element is valid");
+          assert.equal(isValid, false, "element is valid");
 
           var hint = Polymer.dom(element.$.hint);
           assert.equal(hint.textContent, element.T('This field is required.'), 'Error message not set correctly');
 
           var isValid = element.validate();
-          assert.equal(false, isValid, "element is valid");
+          assert.equal(isValid, false, "element is valid");
 
           var hint = Polymer.dom(element.$.hint);
           assert.equal(hint.textContent, element.T('This field is required.'), 'Error message not set correctly');
