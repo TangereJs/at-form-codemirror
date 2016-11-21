@@ -268,10 +268,6 @@
       this._internalValidStateUpdate(this.required, this.maxChars);
     },
 
-    attached: function() {
-      // this._cmInstance.value = String(this.value);
-    },
-
     _disabledChanged: function(newValue, oldValue) {
       var label = this.$.label;
       this.toggleClass('disabled', newValue, label);
@@ -309,7 +305,7 @@
       }
 
       if (this._isReady) {
-        if ([null, "null"].indexOf(newValue) > -1) {
+        if (newValue === null) {
           this._cmInstance.value = "";
         } else {
           this._cmInstance.value = String(this.value);
@@ -332,8 +328,7 @@
       // validate must validate the current value
       var inputValue = this.$.codeMirror.value;
 
-      var valueIsNull = [null, "null"].indexOf(this.value) !== -1;
-      if ((valueIsNull && inputValue !== "") || (!valueIsNull && this.value !== inputValue)) {
+      if ((this.value === null && inputValue !== "") || (this.value !== null && this.value !== inputValue)) {
         this.value = inputValue;
       }
 
