@@ -269,7 +269,7 @@
     },
 
     attached: function() {
-      this._cmInstance.value = String(this.value);
+      // this._cmInstance.value = String(this.value);
     },
 
     _disabledChanged: function(newValue, oldValue) {
@@ -309,7 +309,7 @@
       }
 
       if (this._isReady) {
-        if (newValue === null) {
+        if ([null, "null"].indexOf(newValue) > -1) {
           this._cmInstance.value = "";
         } else {
           this._cmInstance.value = String(this.value);
@@ -332,7 +332,8 @@
       // validate must validate the current value
       var inputValue = this.$.codeMirror.value;
 
-      if ((this.value === null && inputValue !== "") || (this.value !== null && this.value !== inputValue)) {
+      var valueIsNull = [null, "null"].indexOf(this.value) !== -1;
+      if ((valueIsNull && inputValue !== "") || (!valueIsNull && this.value !== inputValue)) {
         this.value = inputValue;
       }
 
