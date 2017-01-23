@@ -283,10 +283,11 @@
       var atContainer = this.$.atContainer;
       this.toggleClass('hidden', newValue, atContainer);
 
-      if (!newValue) {
-        this.refresh();
-        this.$.codeMirror.maxLinesChanged(this.maxLines, this.maxLines);
-      }
+      var self = this;
+      this.async(function () {
+        self.$.codeMirror.hide = false;
+        self.refresh();
+      });
     },
 
     _internalValidStateUpdate: function (required, maxChars) {
