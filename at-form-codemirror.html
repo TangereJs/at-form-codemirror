@@ -283,11 +283,10 @@
       var atContainer = this.$.atContainer;
       this.toggleClass('hidden', newValue, atContainer);
 
-      var self = this;
-      this.async(function () {
-        self.$.codeMirror.hide = false;
-        self.refresh();
-      });
+      this.$.codeMirror.hide = newValue;
+      if (!newValue) {
+        this.refresh();        
+      }
     },
 
     _internalValidStateUpdate: function (required, maxChars) {
@@ -311,6 +310,10 @@
         } else {
           this._cmInstance.value = String(this.value);
         }
+
+        this.async(function () {
+          this._cmInstance.refresh();          
+        }, 400);
 
         if (this.autoValidate) { this._validate(true); }
 
