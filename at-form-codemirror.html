@@ -157,7 +157,8 @@
           title: "sql", value: "sql" }, {
           title: "xml", value: "xml" }, {
           title: "liquid", value: "liquid" }, {
-          title: "json", value: "application/json"
+          title: "json", value: "application/json" }, {
+          title: "yaml", value: "yaml"
         }]
       },
 
@@ -285,7 +286,7 @@
 
       this.$.codeMirror.hide = newValue;
       if (!newValue) {
-        this.refresh();        
+        this.refresh();
       }
     },
 
@@ -312,7 +313,7 @@
         }
 
         this.async(function () {
-          this._cmInstance.refresh();          
+          this._cmInstance.refresh();
         }, 400);
 
         if (this.autoValidate) { this._validate(true); }
