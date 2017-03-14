@@ -265,6 +265,7 @@
       }
 
       this._isReady = true;
+      this._modeChanged(this.mode);
       this._valueChanged(this.value, "called from ready");
       this._internalValidStateUpdate(this.required, this.maxChars);
     },
