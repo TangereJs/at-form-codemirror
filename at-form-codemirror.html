@@ -365,7 +365,13 @@
 
     _modeChanged: function() {
       if (this._isReady) {
-        this._cmInstance.mode = this.mode;
+        var m = this.mode;
+        
+        // temp. workaround until codemirror carbon/liquid are working as specificed
+        if(m=="carbon") m = "liquidmixed";
+        if(m=="liquid") m = "liquidmixed";
+        
+        this._cmInstance.mode = m;
       }
     },
 
