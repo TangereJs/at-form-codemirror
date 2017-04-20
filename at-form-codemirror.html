@@ -26,7 +26,7 @@
     <div id="atContainer" class="at-container">
       <iron-label id="label" for="codeMirror">{{label}}</iron-label>
       <div id="contentContainer" class="at-content-container">
-        <code-mirror id="codeMirror" max-lines="{{maxLines}}"></code-mirror>
+        <code-mirror id="codeMirror" max-lines="{{maxLines}}" change-on-keypress="{{changeOnKeypress}}" ></code-mirror>
       </div>
       <div id="hint"></div>
     </div>
@@ -202,6 +202,18 @@
         type: Boolean,
         value: false,
         observer: '_noLineNumbersChanged'
+      },
+
+      /**
+       * if true value-changed event will be fired after each change made in codemirror editor
+       * 
+       * @property changeOnKeypress
+       * @type Boolean
+       * @default false 
+       */
+      changeOnKeypress: {
+        type: Boolean,
+        value: false
       }
     },
 
