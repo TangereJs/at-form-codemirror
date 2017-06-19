@@ -201,7 +201,8 @@
             }
           },
           required: false,
-          maxChars: 0
+          maxChars: 0,
+          mode: "htmlmixed"
         };
 
         var stringTypeString = getTypeString("");
@@ -236,7 +237,8 @@
             }
           },
           required: false,
-          maxChars: 0
+          maxChars: 0,
+          mode: 'htmlmixed'
         };
 
         var value = null;
@@ -288,7 +290,8 @@
             }
           },
           required: false,
-          maxChars: 0
+          maxChars: 0,
+          mode: 'htmlmixed'
         };
 
         var value = "lorem ipsum";
@@ -313,7 +316,8 @@
             }
           },
           required: false,
-          maxChars: 5
+          maxChars: 5,
+          mode: 'htmlmixed'
         };
 
         var value = "lorem ipsum";
@@ -327,6 +331,85 @@
         var validationResult = inputValidation._validateData(schema, value, format);
         assert.equal(validationResult.isValid, true, 'value is invalid');
         assert.equal(validationResult.errorMessage, '');
+      });
+
+      test('valid schema, value = "lorem ipsum", mode missing', function() {
+        var inputValidation = Tangere.behaviors.AtFormCodeMirrorInputValidation;
+        var schema = {
+          properties: {
+            value: {
+              type: String
+            }
+          },
+          required: false,
+          maxChars: 0
+        };
+
+        var value = "lorem ipsum";
+
+        var validationResult = inputValidation._validateData(schema, value, format);
+        assert.equal(validationResult.isValid, false, 'value is valid');
+        assert.equal(validationResult.errorMessage, format('schema.mode is not a string'));
+      });
+
+      test('valid schema, value = "lorem ipsum", mode not a string', function() {
+        var inputValidation = Tangere.behaviors.AtFormCodeMirrorInputValidation;
+        var schema = {
+          properties: {
+            value: {
+              type: String
+            }
+          },
+          required: false,
+          maxChars: 0,
+          mode: 123
+        };
+
+        var value = "lorem ipsum";
+
+        var validationResult = inputValidation._validateData(schema, value, format);
+        assert.equal(validationResult.isValid, false, 'value is valid');
+        assert.equal(validationResult.errorMessage, format('schema.mode is not a string'));
+      });
+
+      test('valid schema, value = "lorem ipsum", mode htmlmixed', function() {
+        var inputValidation = Tangere.behaviors.AtFormCodeMirrorInputValidation;
+        var schema = {
+          properties: {
+            value: {
+              type: String
+            }
+          },
+          required: false,
+          maxChars: 0,
+          mode: "htmlmixed"
+        };
+
+        var value = "lorem ipsum";
+
+        var validationResult = inputValidation._validateData(schema, value, format);
+        assert.equal(validationResult.isValid, true, 'value is invalid');
+        assert.equal(validationResult.errorMessage, format(''));
+      });
+
+      test('valid schema, value = "lorem ipsum", mode application/json', function() {
+        var inputValidation = Tangere.behaviors.AtFormCodeMirrorInputValidation;
+        var schema = {
+          properties: {
+            value: {
+              type: String
+            }
+          },
+          required: false,
+          maxChars: 0,
+          mode: "application/json"
+        };
+
+        var value = "lorem ipsum";
+
+        var validationResult = inputValidation._validateData(schema, value, format);
+        assert.equal(validationResult.isValid, false, 'value is valid');
+        assert.equal(validationResult.errorMessage, format('SyntaxError: Unexpected token l in JSON at position 0'));
       });
 
     });

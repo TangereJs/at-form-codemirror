@@ -35,6 +35,10 @@
         return Object.prototype.toString.call(obj) === "[object HTMLUnknownElement]";
       }
 
+      function isString(obj) {
+        return Object.prototype.toString.apply(obj) === "[object String]";
+      }
+
       function format(format) {
 
         var args_ = Array.prototype.slice.call(arguments, 1);
@@ -109,6 +113,13 @@
         return validationResult;
       }
 
+      // schmea must have mode property and mode must be a string
+      validationResult.isValid = isString(schema.mode);
+      if (!validationResult.isValid) {
+        validationResult.errorMessage = localizer("schema.mode is not a string");
+        return validationResult;
+      }
+
       /*
         2. check data type
         value assigned must match type specified in at-form-codemirror.properties.value.type
@@ -142,6 +153,11 @@
         for at-form-codemirror check maxChars only
       */
       validationResult = _validateMaxChars(schema.maxChars, value, localizer);
+      if (!validationResult.isValid) {
+        return validationResult;
+      }
+
+      validationResult = _validateJsonValue(schema.mode, value, localizer);
 
       return validationResult;
 
@@ -209,6 +225,29 @@
 
         return validationResult;
       }
+
+      function _validateJsonValue(mode, value, localizer) {
+        var validationResult = {
+          isValid: true,
+          errorMessage: ""
+        };
+
+        if (!value) { return validationResult; }
+
+        // when mode === "application/json" we parse the value to see if its valid json
+        // if not we show exception as an error
+        if (mode === "application/json") {
+          try {
+            var parsedValue = JSON.parse(value);
+          } catch (e) {
+            validationResult.isValid = false;
+            validationResult.errorMessage = e;
+          }
+        }
+
+        return validationResult;
+      }
+
     }
   };
 
