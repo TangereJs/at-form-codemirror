@@ -409,7 +409,15 @@
 
         var validationResult = inputValidation._validateData(schema, value, format);
         assert.equal(validationResult.isValid, false, 'value is valid');
-        assert.equal(validationResult.errorMessage, format('SyntaxError: Unexpected token l in JSON at position 0'));
+
+        // each browser has different error message when parsing json; we need to compute that message here; having static ones doesn't work
+        var parseJsonErrorMessage = "";
+        try {
+          JSON.parse("lorem ipsum");
+        } catch(e) {
+          parseJsonErrorMessage = e.toString();
+        }
+        assert.equal(validationResult.errorMessage, format(parseJsonErrorMessage));
       });
 
     });
