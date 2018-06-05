@@ -57,7 +57,7 @@
   </test-fixture>
 
   <script>
-    suite('null value tests', function() {
+    suite('null tests value set as attribute', function() {
 
       test('attribute value set to null', function(done) {
         var input = fixture('attrNullValue');
@@ -210,11 +210,9 @@
           done();
         });
       });
+    });
 
-      /********************************************************************************/
-      /* Property value tests
-      /********************************************************************************/
-
+    suite('null tests value set as property', function() {
       test('property value set to null', function(done) {
         var input = document.createElement('at-form-codemirror');
         input.value = null;
