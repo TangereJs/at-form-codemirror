@@ -368,12 +368,13 @@
     },
 
     _updateUIValidState: function(isValid) {
+      if (!this.$) return;
+
       var label = this.$.label;
       this.toggleClass('error', !isValid, label);
       var contentContainer = this.$.contentContainer;
       this.toggleClass('error', !isValid, contentContainer);
-      var atContainer = this.$.atContainer;
-      var codeMirrorCode = atContainer.getElementsByClassName('CodeMirror-lines')[0];
+      var codeMirrorCode = this.$.atContainer.getElementsByClassName('CodeMirror-lines')[0];
       this.toggleClass('error', !isValid, codeMirrorCode);
       var hint = this.$.hint;
       this.toggleClass('error', !isValid, hint);
