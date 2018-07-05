@@ -360,7 +360,7 @@
     });
 
     suite('at-form-codemirror is made invalid by setting mode to application/json and value to invalid json string', function() {
-      var actMaxChars = 5;
+      var actValue = "lorem ipsum";
 
       test('(autoValidate, showError) = (false, false) elt is invalid before attaching to the DOM, ui is valid after attaching to the DOM', function() {
         if (polymerVersion() != 1) return;
@@ -370,7 +370,7 @@
 
         elt.autoValidate = false;
         elt.mode = "application/json";
-        elt.value = "lorem ipsum";
+        elt.value = actValue;
 
         // call validate function
         var isValid = elt.validate(false);
@@ -390,11 +390,17 @@
         if (polymerVersion() != 1) return;
 
         var elt = document.createElement(testedElementName);
-        var errorMessage = elt.T("SyntaxError: Unexpected token l in JSON at position 0");
+        var errorMessage = '';
+
+        try {
+          JSON.parse(actValue);
+        } catch (e) {
+          errorMessage = e;
+        }
 
         elt.autoValidate = false;
         elt.mode = "application/json";
-        elt.value = "lorem ipsum";
+        elt.value = actValue;
 
         // call validate function
         var isValid = elt.validate(true);
@@ -414,11 +420,16 @@
         if (polymerVersion() != 1) return;
 
         var elt = document.createElement(testedElementName);
-        var errorMessage = elt.T("SyntaxError: Unexpected token l in JSON at position 0");
+        var errorMessage = '';
+        try {
+          JSON.parse(actValue);
+        } catch (e) {
+          errorMessage = e;
+        }
 
         elt.autoValidate = true;
         elt.mode = "application/json";
-        elt.value = "lorem ipsum";
+        elt.value = actValue;
 
         // call validate function
         var isValid = elt.validate(false);
@@ -438,11 +449,17 @@
         if (polymerVersion() != 1) return;
 
         var elt = document.createElement(testedElementName);
-        var errorMessage = elt.T("SyntaxError: Unexpected token l in JSON at position 0");
+        var errorMessage = '';
+
+        try {
+          JSON.parse(actValue);
+        } catch (e) {
+          errorMessage = e;
+        }
 
         elt.autoValidate = true;
         elt.mode = "application/json";
-        elt.value = "lorem ipsum";
+        elt.value = actValue;
 
         // call validate function
         var isValid = elt.validate(true);
